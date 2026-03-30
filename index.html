@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hiroshima Travel Guide</title>
+  <title>Hiroshima Travel Guide | 广岛旅行助手</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e1e2f">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -94,23 +94,32 @@
       background-color: #475569;
     }
 
-    /* sponsor */
+    /* sponsor 区块样式 - 支持图片广告 */
     .sponsor {
       text-align: center;
       margin: 1.5rem 0;
       padding: 0.75rem;
       background-color: rgba(0,0,0,0.05);
       border-radius: 1rem;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
+      transition: all 0.2s;
     }
-
     body.dark .sponsor {
       background-color: rgba(255,255,255,0.05);
     }
-
     .sponsor a {
       color: #3b82f6;
       text-decoration: none;
+    }
+    .sponsor-img {
+      max-width: 100%;
+      border-radius: 0.75rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .sponsor-text {
+      font-size: 0.8rem;
+      opacity: 0.8;
     }
 
     /* card grid */
@@ -221,17 +230,36 @@
   </header>
 
   <div class="container" id="app">
-    <!-- メインコンテンツがここに入る -->
+    <!-- 动态内容 -->
   </div>
 
-<footer>
-        <div>Contact us</div>
-        <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>
-        <div style="margin-top:15px;font-size:0.9em;">© 2026 Hiroshima Travel Guide. All rights reserved.</div>
-    </footer>
-
+  <footer>
+    <div>Contact us</div>
+    <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>
+    <div style="margin-top:15px;font-size:0.9em;">© 2026 Hiroshima Travel Guide. All rights reserved.</div>
+  </footer>
+
   <script>
-    // データ定義 (12スポット)
+    // ======================== 🎯 赞助商配置区域 (请在这里修改图片和链接) ========================
+    // 说明：您可以自由更换 sponsorImageUrl 和 sponsorLinkUrl，支持图片广告展示。
+    // 如果 sponsorImageUrl 留空，则显示默认的文本赞助链接；否则展示图片广告 + 辅助文本。
+    // 图片建议尺寸：宽 600~800px，比例 16:9 或 4:3 效果最佳，URL 可以是任何网络图片地址。
+    // ----------------------------------------------------------------------------------------
+    const SPONSOR_CONFIG = {
+      // 赞助商图片地址 (推荐使用 https 图片)  例如: "https://example.com/your-ad-banner.jpg"
+      sponsorImageUrl: "",   //  ← 在这里填入图片URL (若留空则显示文字广告)
+      // 赞助商点击链接 (通常指向官网或推广页面)
+      sponsorLinkUrl: "https://visithiroshima.net/",  //  ← 可换成您的推广链接
+      // 广告备用文本 / 公司名称
+      sponsorAltText: "Visit Hiroshima Official Partner",
+      // 辅助显示文字（显示在图片下方或纯文本模式下显示）
+      sponsorMessageEn: "⭐ Special Offer: Discover Hiroshima with local experts!",
+      sponsorMessageJa: "⭐ 広島旅行をお得に！地元情報満載",
+      sponsorMessageZh: "⭐ 广岛旅行特惠：在地深度体验推荐"
+    };
+    // ======================================================================================
+
+    // 景点数据 (12个广岛必游)
     const spots = [
       { id: 1, nameEn: "Itsukushima Shrine", nameJa: "厳島神社", nameZh: "严岛神社", descEn: "Famous floating torii gate on Miyajima island. UNESCO World Heritage.", descJa: "宮島にある海上に浮かぶ大鳥居が有名な世界遺産。", descZh: "宫岛上有名的海上大鸟居，世界遗产。", img: "https://placehold.co/600x400/1e3a8a/white?text=Miyajima", official: "https://visit-miyajima-japan.com/", accessEn: "JR Miyajimaguchi + ferry", accessJa: "JR宮島口駅からフェリー", accessZh: "JR宫岛口站+渡轮" },
       { id: 2, nameEn: "Hiroshima Peace Memorial", nameJa: "原爆ドーム", nameZh: "原子弹爆炸圆顶屋", descEn: "Symbol of peace and UNESCO site. Ruins of the atomic bombing.", descJa: "平和の象徴、世界遺産。被爆遺構。", descZh: "和平象征，世界遗产。核爆遗址。", img: "https://placehold.co/600x400/2d3748/white?text=Peace+Dome", official: "https://www.city.hiroshima.lg.jp/site/peace/", accessEn: "Genbaku Dome-mae tram stop", accessJa: "原爆ドーム前電停", accessZh: "原子弹爆炸圆顶屋前电车站" },
@@ -248,40 +276,74 @@
     ];
 
     let currentLang = "en";
-    let currentSpotId = null;
+    let currentSpotId = null;      // 当前是否在详情页，存储ID；null表示主页
 
     const appDiv = document.getElementById("app");
 
+    // ---------- 赞助商区块渲染函数 (根据SPONSOR_CONFIG动态生成) ----------
+    function renderSponsorBlock() {
+      // 获取当前语言的消息文本
+      let sponsorMsg = "";
+      if (currentLang === "en") sponsorMsg = SPONSOR_CONFIG.sponsorMessageEn;
+      else if (currentLang === "ja") sponsorMsg = SPONSOR_CONFIG.sponsorMessageJa;
+      else sponsorMsg = SPONSOR_CONFIG.sponsorMessageZh;
+      
+      const hasImage = SPONSOR_CONFIG.sponsorImageUrl && SPONSOR_CONFIG.sponsorImageUrl.trim() !== "";
+      const linkUrl = SPONSOR_CONFIG.sponsorLinkUrl || "#";
+      const altText = SPONSOR_CONFIG.sponsorAltText || "Sponsor";
+      
+      if (hasImage) {
+        // 图片广告模式
+        return `
+          <div class="sponsor">
+            <a href="${linkUrl}" target="_blank" rel="noopener noreferrer">
+              <img class="sponsor-img" src="${SPONSOR_CONFIG.sponsorImageUrl}" alt="${altText}" loading="lazy">
+            </a>
+            <div class="sponsor-text">✨ ${sponsorMsg} ✨</div>
+          </div>
+        `;
+      } else {
+        // 无图片时显示纯文本赞助链接
+        return `
+          <div class="sponsor">
+            ⭐ ${sponsorMsg} ⭐<br>
+            <a href="${linkUrl}" target="_blank" rel="noopener noreferrer">🔗 ${altText} | 赞助商链接 Sponsor</a>
+          </div>
+        `;
+      }
+    }
+
+    // 主页面渲染 (卡片列表)
     function renderMainPage() {
+      // 重要: 将当前详情ID置空，确保返回后不再自动跳回详情
+      currentSpotId = null;
+      
       const cardsHtml = spots.map(spot => `
         <div class="card" data-id="${spot.id}">
           <img class="card-img" src="${spot.img}" alt="${spot.nameEn}" loading="lazy">
           <div class="card-content">
-            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.nameEn}</div>
-            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.nameJa}</div>
-            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.nameZh}</div>
-            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.descEn.substring(0, 60)}...</div>
-            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.descJa.substring(0, 60)}...</div>
-            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.descZh.substring(0, 60)}...</div>
+            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.nameEn)}</div>
+            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.nameJa)}</div>
+            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.nameZh)}</div>
+            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.descEn.substring(0, 60))}...</div>
+            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.descJa.substring(0, 60))}...</div>
+            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.descZh.substring(0, 60))}...</div>
           </div>
         </div>
       `).join("");
-
-      const sponsorHtml = `
-        <div class="sponsor">
-          ⭐ スポンサー Sponsor 赞助商 ⭐<br>
-          <a href="#">あなたの広告 here → お問い合わせ</a>
-        </div>
-      `;
-
+      
+      const topSponsor = renderSponsorBlock();
+      const bottomSponsor = renderSponsorBlock();
+      
       appDiv.innerHTML = `
-        ${sponsorHtml}
+        ${topSponsor}
         <div class="card-grid">
           ${cardsHtml}
         </div>
-        ${sponsorHtml}
+        ${bottomSponsor}
       `;
-
+      
+      // 绑定卡片点击事件 (进入详情)
       document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", (e) => {
           const id = parseInt(card.dataset.id);
@@ -289,44 +351,58 @@
         });
       });
     }
-
-    function showDetail(id) {
-      const spot = spots.find(s => s.id === id);
-      if (!spot) return;
-      currentSpotId = id;
-
-      const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
-      const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
-      const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
-
-      const sponsorHtml = `
-        <div class="sponsor">
-          🔹 スポンサー Sponsor 🔹<br>
-          <a href="#">広告スペース | Ad Space</a>
-        </div>
-      `;
-
-      appDiv.innerHTML = `
-        <button class="back-btn" id="backButton">← Back</button>
-        ${sponsorHtml}
-        <img class="detail-img" src="${spot.img}" alt="${nameKey}">
-        <h2>${nameKey}</h2>
-        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${descKey}</p>
-        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${accessKey}</p>
-        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
-          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
-        </a>
-        ${sponsorHtml}
-      `;
-
-      document.getElementById("backButton").addEventListener("click", () => {
-        renderMainPage();
-        updateLanguageOnPage();
+    
+    // 简单的防XSS辅助
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+        return c;
       });
     }
 
+    // 详情页渲染
+    function showDetail(id) {
+      const spot = spots.find(s => s.id === id);
+      if (!spot) return;
+      currentSpotId = id;   // 记录当前详情id
+      
+      const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
+      const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
+      const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
+      
+      const topSponsor = renderSponsorBlock();
+      const bottomSponsor = renderSponsorBlock();
+      
+      appDiv.innerHTML = `
+        <button class="back-btn" id="backButton">← Back</button>
+        ${topSponsor}
+        <img class="detail-img" src="${spot.img}" alt="${escapeHtml(nameKey)}">
+        <h2>${escapeHtml(nameKey)}</h2>
+        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${escapeHtml(descKey)}</p>
+        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${escapeHtml(accessKey)}</p>
+        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
+          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
+        </a>
+        ${bottomSponsor}
+      `;
+      
+      const backBtn = document.getElementById("backButton");
+      if (backBtn) {
+        // 修复关键bug: 返回时清除详情状态并重新渲染主页面
+        backBtn.addEventListener("click", () => {
+          renderMainPage();    // 内部已将 currentSpotId = null, 并完全刷新主页
+        });
+      }
+    }
+    
+    // 全局语言切换刷新函数 (保留对主页/详情两种状态的支持)
     function updateLanguageOnPage() {
-      // テキストの切り替え
+      // 更新所有带 lang-text 类的元素 (卡片标题/简介等，主页面/详情页都适用)
       document.querySelectorAll(".lang-text").forEach(el => {
         const langAttr = el.getAttribute("data-lang");
         if (langAttr === currentLang) {
@@ -335,21 +411,30 @@
           el.classList.remove("active-lang");
         }
       });
-
-      // 詳細ページで表示中の場合、再描画
-      if (currentSpotId) {
+      
+      // 如果当前处于详情页模式 (currentSpotId 不为 null)，则重新渲染详情页以刷新语言文本
+      if (currentSpotId !== null) {
         showDetail(currentSpotId);
       } else {
-        renderMainPage(); // 再描画で言語反映
+        // 当前为主页: 需要重新渲染主页以更新卡片内的语言文本 (赞助商消息也会依赖currentLang)
+        renderMainPage();
       }
     }
-
+    
     function setLang(lang) {
       currentLang = lang;
       updateLanguageOnPage();
     }
 
-    // イベントリスナー
+    // 主题切换 & 本地存储
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.add("dark");
+    }
+    
     document.getElementById("darkModeBtn").addEventListener("click", () => {
       document.body.classList.remove("light");
       document.body.classList.add("dark");
@@ -360,21 +445,18 @@
       document.body.classList.add("light");
       localStorage.setItem("theme", "light");
     });
+    
+    // 语言按钮
     document.getElementById("langEn").addEventListener("click", () => setLang("en"));
     document.getElementById("LangJa").addEventListener("click", () => setLang("ja"));
     document.getElementById("langZh").addEventListener("click", () => setLang("zh"));
-
-    // 保存テーマ読み込み
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      document.body.classList.remove("dark");
-      document.body.classList.add("light");
-    } else {
-      document.body.classList.add("dark");
-    }
-
-    // 初期表示
+    
+    // 初始化渲染
     renderMainPage();
+
+    // ---------- 附：如何修改赞助商图片和链接的在线指引 (控制台输出提示，便于维护) ----------
+    console.log("🔧 赞助商配置提示: 如需更换广告图片或链接，请修改代码顶部 SPONSOR_CONFIG 对象中的 sponsorImageUrl 和 sponsorLinkUrl 字段。");
+    console.log("📌 当前赞助商图片:", SPONSOR_CONFIG.sponsorImageUrl || "未设置 (将显示文字广告)");
   </script>
 </body>
 </html>
