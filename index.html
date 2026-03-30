@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Hiroshima Travel Guide</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e1e2f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.2s;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Dark mode (default) */
+    body.dark {
+      background-color: #121212;
+      color: #e0e0e0;
+    }
+
+    body.light {
+      background-color: #f5f7fa;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /* header & footer */
+    header, footer {
+      padding: 1rem;
+      text-align: center;
+    }
+
+    body.dark header, body.dark footer {
+      background-color: #1e1e2f;
+      border-bottom: 1px solid #2c2c3a;
+    }
+
+    body.light header, body.light footer {
+      background-color: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    footer {
+      border-top: 1px solid;
+      margin-top: 2rem;
+      font-size: 0.85rem;
+    }
+
+    /* controls */
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      border: none;
+      font-weight: 500;
+      cursor: pointer;
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    body.dark button {
+      background-color: #2563eb;
+    }
+
+    button.lang-btn {
+      background-color: #334155;
+    }
+
+    body.dark button.lang-btn {
+      background-color: #475569;
+    }
+
+    /* sponsor */
+    .sponsor {
+      text-align: center;
+      margin: 1.5rem 0;
+      padding: 0.75rem;
+      background-color: rgba(0,0,0,0.05);
+      border-radius: 1rem;
+      font-size: 0.8rem;
+    }
+
+    body.dark .sponsor {
+      background-color: rgba(255,255,255,0.05);
+    }
+
+    .sponsor a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    /* card grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      border-radius: 1.5rem;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body.dark .card {
+      background-color: #1e1e2f;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    body.light .card {
+      background-color: white;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      background-color: #cbd5e1;
+    }
+
+    .card-content {
+      padding: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    /* detail page */
+    .detail-img {
+      width: 100%;
+      max-height: 320px;
+      object-fit: cover;
+      border-radius: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .back-btn {
+      margin: 1rem 0;
+      display: inline-block;
+    }
+
+    .official-link {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 2rem;
+    }
+
+    .lang-text {
+      display: none;
+    }
+
+    .lang-text.active-lang {
+      display: block;
+    }
+
+    h2.lang-text, p.lang-text, .card-title.lang-text, .card-desc.lang-text {
+      display: none;
+    }
+
+    h2.lang-text.active-lang, p.lang-text.active-lang, .card-title.lang-text.active-lang, .card-desc.lang-text.active-lang {
+      display: block;
+    }
+  </style>
+</head>
+<body class="dark">
+  <header>
+    <div class="controls">
+      <div>
+        <button id="darkModeBtn" aria-label="Dark mode">🌙 Dark</button>
+        <button id="lightModeBtn" aria-label="Light mode">☀️ Light</button>
+      </div>
+      <div>
+        <button id="langEn" class="lang-btn">🇬🇧 EN</button>
+        <button id="LangJa" class="lang-btn">🇯🇵 日本語</button>
+        <button id="langZh" class="lang-btn">🇨🇳 中文</button>
+      </div>
+    </div>
+    <h1>
+      <span class="lang-text active-lang" data-lang="en">Hiroshima Travel Guide</span>
+      <span class="lang-text" data-lang="ja">広島トラベルガイド</span>
+      <span class="lang-text" data-lang="zh">广岛旅行指南</span>
+    </h1>
+  </header>
+
+  <div class="container" id="app">
+    <!-- メインコンテンツがここに入る -->
+  </div>
+
+  <footer>
+    <p>Contact us<br>mementomorikatsu@gmail.com</p>
+  </footer>
+
+  <script>
+    // データ定義 (12スポット)
+    const spots = [
+      { id: 1, nameEn: "Itsukushima Shrine", nameJa: "厳島神社", nameZh: "严岛神社", descEn: "Famous floating torii gate on Miyajima island. UNESCO World Heritage.", descJa: "宮島にある海上に浮かぶ大鳥居が有名な世界遺産。", descZh: "宫岛上有名的海上大鸟居，世界遗产。", img: "https://placehold.co/600x400/1e3a8a/white?text=Miyajima", official: "https://visit-miyajima-japan.com/", accessEn: "JR Miyajimaguchi + ferry", accessJa: "JR宮島口駅からフェリー", accessZh: "JR宫岛口站+渡轮" },
+      { id: 2, nameEn: "Hiroshima Peace Memorial", nameJa: "原爆ドーム", nameZh: "原子弹爆炸圆顶屋", descEn: "Symbol of peace and UNESCO site. Ruins of the atomic bombing.", descJa: "平和の象徴、世界遺産。被爆遺構。", descZh: "和平象征，世界遗产。核爆遗址。", img: "https://placehold.co/600x400/2d3748/white?text=Peace+Dome", official: "https://www.city.hiroshima.lg.jp/site/peace/", accessEn: "Genbaku Dome-mae tram stop", accessJa: "原爆ドーム前電停", accessZh: "原子弹爆炸圆顶屋前电车站" },
+      { id: 3, nameEn: "Hiroshima Castle", nameJa: "広島城", nameZh: "广岛城", descEn: "Reconstructed castle with samurai history & museum.", descJa: "復元された天守閣。武家文化の博物館。", descZh: "重建的天守阁，武士文化博物馆。", img: "https://placehold.co/600x400/2c3e50/white?text=Hiroshima+Castle", official: "https://www.rijo-castle.jp/", accessEn: "Kamiyacho-nishi tram", accessJa: "紙屋町西電停", accessZh: "纸屋町西电车站" },
+      { id: 4, nameEn: "Shukkeien Garden", nameJa: "縮景園", nameZh: "缩景园", descEn: "Beautiful Japanese landscape garden from Edo period.", descJa: "江戸時代の美しい回遊式庭園。", descZh: "江户时代优美的回游式庭园。", img: "https://placehold.co/600x400/14532d/white?text=Shukkeien", official: "https://www.hiroshima-bunka.jp/shukkeien/", accessEn: "Shukkeien-mae tram", accessJa: "縮景園前電停", accessZh: "缩景园前电车站" },
+      { id: 5, nameEn: "Okonomimura", nameJa: "お好み村", nameZh: "御好村", descEn: "3 floors of Hiroshima-style okonomiyaki restaurants.", descJa: "広島風お好み焼きの専門店が集まるビル。", descZh: "广岛风味御好烧专门店大楼。", img: "https://placehold.co/600x400/991b1b/white?text=Okonomimura", official: "https://www.okonomimura.jp/", accessEn: "Hatchobori tram", accessJa: "八丁堀電停", accessZh: "八丁堀电车站" },
+      { id: 6, nameEn: "Mitaki-dera Temple", nameJa: "三瀧寺", nameZh: "三泷寺", descEn: "Temple with waterfalls & autumn colors.", descJa: "滝と紅葉の寺。", descZh: "瀑布与红叶的寺庙。", img: "https://placehold.co/600x400/2b5e2b/white?text=Mitaki", official: "https://www.mitakiji.jp/", accessEn: "Mitaki Station + walk", accessJa: "三滝駅から徒歩", accessZh: "三泷站步行" },
+      { id: 7, nameEn: "Mazda Museum", nameJa: "マツダミュージアム", nameZh: "马自达博物馆", descEn: "Factory tour & car exhibition (reservation needed).", descJa: "工場見学と車の展示（要予約）。", descZh: "工厂参观与汽车展览（需预约）。", img: "https://placehold.co/600x400/4b5563/white?text=Mazda", official: "https://www.mazda.com/ja/about/museum/", accessEn: "Mukainada Station", accessJa: "向洋駅", accessZh: "向洋站" },
+      { id: 8, nameEn: "Onomichi Temple Walk", nameJa: "尾道の寺めぐり", nameZh: "尾道寺庙巡礼", descEn: "Historic hillside temples & cat alley.", descJa: "坂の町、猫の細道と古寺。", descZh: "坡道之城、猫咪小路与古寺。", img: "https://placehold.co/600x400/8b5a2b/white?text=Onomichi", official: "https://www.ononavi.jp/", accessEn: "JR Onomichi Station", accessJa: "JR尾道駅", accessZh: "JR尾道站" },
+      { id: 9, nameEn: "Sandankyo Valley", nameJa: "三段峡", nameZh: "三段峡", descEn: "Scenic gorge with waterfalls & boat ride.", descJa: "渓谷美とボート遊び。", descZh: "溪谷美景与乘船。", img: "https://placehold.co/600x400/2b6e4e/white?text=Sandankyo", official: "https://www.sandankyo.org/", accessEn: "Bus from Hiroshima Station", accessJa: "広島駅からバス", accessZh: "广岛站巴士" },
+      { id: 10, nameEn: "Hiroshima Museum of Art", nameJa: "広島美術館", nameZh: "广岛美术馆", descEn: "European & Japanese modern art collection.", descJa: "西洋美術と日本近代美術。", descZh: "西洋美术与日本近代美术。", img: "https://placehold.co/600x400/1f4a5c/white?text=Art+Museum", official: "https://www.hiroshima-museum.jp/", accessEn: "Kamiyacho-nishi", accessJa: "紙屋町西", accessZh: "纸屋町西" },
+      { id: 11, nameEn: "Hiroshima Orizuru Tower", nameJa: "おりづるタワー", nameZh: "折鹤塔", descEn: "Rooftop view of Peace Dome & fold paper cranes.", descJa: "屋上展望台と折り鶴体験。", descZh: "屋顶观景台与折千纸鹤体验。", img: "https://placehold.co/600x400/4f5b62/white?text=Orizuru", official: "https://www.orizuru-tower.jp/", accessEn: "Genbaku Dome-mae", accessJa: "原爆ドーム前", accessZh: "原子弹爆炸圆顶屋前" },
+      { id: 12, nameEn: "Miyajima Omotesando", nameJa: "宮島表参道", nameZh: "宫岛表参道", descEn: "Shopping street with momiji manju & oysters.", descJa: "もみじ饅頭や牡蠣の商店街。", descZh: "红叶馒头和牡蛎的商店街。", img: "https://placehold.co/600x400/d97706/white?text=Miyajima+Street", official: "https://www.miyajima-wch.jp/", accessEn: "Miyajima Pier", accessJa: "宮島桟橋", accessZh: "宫岛码头" }
+    ];
+
+    let currentLang = "en";
+    let currentSpotId = null;
+
+    const appDiv = document.getElementById("app");
+
+    function renderMainPage() {
+      const cardsHtml = spots.map(spot => `
+        <div class="card" data-id="${spot.id}">
+          <img class="card-img" src="${spot.img}" alt="${spot.nameEn}" loading="lazy">
+          <div class="card-content">
+            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.nameEn}</div>
+            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.nameJa}</div>
+            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.nameZh}</div>
+            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.descEn.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.descJa.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.descZh.substring(0, 60)}...</div>
+          </div>
+        </div>
+      `).join("");
+
+      const sponsorHtml = `
+        <div class="sponsor">
+          ⭐ スポンサー Sponsor 赞助商 ⭐<br>
+          <a href="#">あなたの広告 here → お問い合わせ</a>
+        </div>
+      `;
+
+      appDiv.innerHTML = `
+        ${sponsorHtml}
+        <div class="card-grid">
+          ${cardsHtml}
+        </div>
+        ${sponsorHtml}
+      `;
+
+      document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", (e) => {
+          const id = parseInt(card.dataset.id);
+          showDetail(id);
+        });
+      });
+    }
+
+    function showDetail(id) {
+      const spot = spots.find(s => s.id === id);
+      if (!spot) return;
+      currentSpotId = id;
+
+      const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
+      const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
+      const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
+
+      const sponsorHtml = `
+        <div class="sponsor">
+          🔹 スポンサー Sponsor 🔹<br>
+          <a href="#">広告スペース | Ad Space</a>
+        </div>
+      `;
+
+      appDiv.innerHTML = `
+        <button class="back-btn" id="backButton">← Back</button>
+        ${sponsorHtml}
+        <img class="detail-img" src="${spot.img}" alt="${nameKey}">
+        <h2>${nameKey}</h2>
+        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${descKey}</p>
+        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${accessKey}</p>
+        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
+          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
+        </a>
+        ${sponsorHtml}
+      `;
+
+      document.getElementById("backButton").addEventListener("click", () => {
+        renderMainPage();
+        updateLanguageOnPage();
+      });
+    }
+
+    function updateLanguageOnPage() {
+      // テキストの切り替え
+      document.querySelectorAll(".lang-text").forEach(el => {
+        const langAttr = el.getAttribute("data-lang");
+        if (langAttr === currentLang) {
+          el.classList.add("active-lang");
+        } else {
+          el.classList.remove("active-lang");
+        }
+      });
+
+      // 詳細ページで表示中の場合、再描画
+      if (currentSpotId) {
+        showDetail(currentSpotId);
+      } else {
+        renderMainPage(); // 再描画で言語反映
+      }
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      updateLanguageOnPage();
+    }
+
+    // イベントリスナー
+    document.getElementById("darkModeBtn").addEventListener("click", () => {
+      document.body.classList.remove("light");
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    });
+    document.getElementById("lightModeBtn").addEventListener("click", () => {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+      localStorage.setItem("theme", "light");
+    });
+    document.getElementById("langEn").addEventListener("click", () => setLang("en"));
+    document.getElementById("LangJa").addEventListener("click", () => setLang("ja"));
+    document.getElementById("langZh").addEventListener("click", () => setLang("zh"));
+
+    // 保存テーマ読み込み
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.add("dark");
+    }
+
+    // 初期表示
+    renderMainPage();
+  </script>
+</body>
+</html>
