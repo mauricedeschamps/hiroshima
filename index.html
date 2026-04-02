@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hiroshima Travel Guide | 広島トラベルガイド</title>
+  <title>Hiroshima Travel Guide</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e1e2f">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,6 +24,7 @@
       margin: 0;
     }
 
+    /* Dark mode (default) */
     body.dark {
       background-color: #121212;
       color: #e0e0e0;
@@ -40,6 +41,7 @@
       padding: 1rem;
     }
 
+    /* header & footer */
     header, footer {
       padding: 1rem;
       text-align: center;
@@ -61,6 +63,7 @@
       font-size: 0.85rem;
     }
 
+    /* controls */
     .controls {
       display: flex;
       justify-content: flex-end;
@@ -91,62 +94,26 @@
       background-color: #475569;
     }
 
-    /* スポンサー枠 (画像+リンク対応) */
+    /* sponsor */
     .sponsor {
       text-align: center;
       margin: 1.5rem 0;
-      padding: 1rem;
-      border-radius: 1.5rem;
+      padding: 0.75rem;
       background-color: rgba(0,0,0,0.05);
+      border-radius: 1rem;
+      font-size: 0.8rem;
     }
 
     body.dark .sponsor {
-      background-color: rgba(255,255,255,0.08);
+      background-color: rgba(255,255,255,0.05);
     }
 
-    .sponsor-banner {
-      display: inline-block;
-      max-width: 100%;
-      border-radius: 1rem;
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .sponsor-banner:hover {
-      transform: scale(1.01);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
-
-    .sponsor-banner img {
-      width: 100%;
-      max-height: 140px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .sponsor-caption {
-      font-size: 0.75rem;
-      margin-top: 0.5rem;
-      opacity: 0.7;
-    }
-
-    .sponsor-guide {
-      background: #fbbf24;
-      color: #1e293b;
-      padding: 0.25rem 0.75rem;
-      border-radius: 2rem;
-      font-size: 0.7rem;
-      font-weight: 500;
-      display: inline-block;
-      margin-top: 0.5rem;
+    .sponsor a {
+      color: #3b82f6;
       text-decoration: none;
     }
 
-    body.dark .sponsor-guide {
-      background: #eab308;
-      color: #0f172a;
-    }
-
+    /* card grid */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -192,6 +159,7 @@
       margin-bottom: 0.5rem;
     }
 
+    /* detail page */
     .detail-img {
       width: 100%;
       max-height: 320px;
@@ -203,12 +171,6 @@
     .back-btn {
       margin: 1rem 0;
       display: inline-block;
-      background-color: #475569;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      color: white;
-      cursor: pointer;
     }
 
     .official-link {
@@ -229,21 +191,12 @@
       display: block;
     }
 
-    .sponsor-note {
-      font-size: 0.7rem;
-      border-top: 1px dashed #94a3b8;
-      margin-top: 0.5rem;
-      padding-top: 0.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 0.8rem;
-      flex-wrap: wrap;
+    h2.lang-text, p.lang-text, .card-title.lang-text, .card-desc.lang-text {
+      display: none;
     }
 
-    .copy-tip {
-      cursor: pointer;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+    h2.lang-text.active-lang, p.lang-text.active-lang, .card-title.lang-text.active-lang, .card-desc.lang-text.active-lang {
+      display: block;
     }
   </style>
 </head>
@@ -267,23 +220,26 @@
     </h1>
   </header>
 
-  <div style="text-align: center; margin-top: 0.5rem;">
-    <style>.pp-KZJED5PPHWTWE{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
-    <form action="https://www.paypal.com/ncp/payment/KZJED5PPHWTWE" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
-      <input class="pp-KZJED5PPHWTWE" type="submit" value="Pay for this App" />
-      <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
-      <section style="font-size: 0.75rem;"> Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
-    </form>
-  </div>
+<div>
+  <style>.pp-KZJED5PPHWTWE{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
+  <form action="https://www.paypal.com/ncp/payment/KZJED5PPHWTWE" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+    <input class="pp-KZJED5PPHWTWE" type="submit" value="Pay for this App" />
+    <img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
+    <section style="font-size: 0.75rem;"> Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+  </form>
+</div>
 
-  <div class="container" id="app"></div>
+
+  <div class="container" id="app">
+    <!-- メインコンテンツがここに入る -->
+  </div>
 
   <footer>
     <p>Contact us<br>mementomorikatsu@gmail.com</p>
   </footer>
 
   <script>
-    // ======================= 観光スポットデータ =======================
+    // データ定義 (12スポット)
     const spots = [
       { id: 1, nameEn: "Itsukushima Shrine", nameJa: "厳島神社", nameZh: "严岛神社", descEn: "Famous floating torii gate on Miyajima island. UNESCO World Heritage.", descJa: "宮島にある海上に浮かぶ大鳥居が有名な世界遺産。", descZh: "宫岛上有名的海上大鸟居，世界遗产。", img: "https://static.gltjp.com/glt/data/article/21000/20480/20231016_140610_99d443db_w1920.webp", official: "https://www.miyajima.or.jp/sp/", accessEn: "JR Miyajimaguchi + ferry", accessJa: "JR宮島口駅からフェリー", accessZh: "JR宫岛口站+渡轮" },
       { id: 2, nameEn: "Hiroshima Peace Memorial", nameJa: "原爆ドーム", nameZh: "原子弹爆炸圆顶屋", descEn: "Symbol of peace and UNESCO site. Ruins of the atomic bombing.", descJa: "平和の象徴、世界遺産。被爆遺構。", descZh: "和平象征，世界遗产。核爆遗址。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNjAFbvTaoTwTmL-olaxR2eoJdaJa22fhKbeoK60cPqg&s=10", official: "https://hpmmuseum.jp/", accessEn: "Genbaku Dome-mae tram stop", accessJa: "原爆ドーム前電停", accessZh: "原子弹爆炸圆顶屋前电车站" },
@@ -299,225 +255,134 @@
       { id: 12, nameEn: "Miyajima Omotesando", nameJa: "宮島表参道", nameZh: "宫岛表参道", descEn: "Shopping street with momiji manju & oysters.", descJa: "もみじ饅頭や牡蠣の商店街。", descZh: "红叶馒头和牡蛎的商店街。", img: "https://ppap.kinto-jp.com/spots_images/5819-images/25370.jpg", official: "https://dive-hiroshima.com/explore/384/", accessEn: "Miyajima Pier", accessJa: "宮島桟橋", accessZh: "宫岛码头" }
     ];
 
-    // ======================= スポンサー設定 (ここを編集するだけで画像とリンク差し替え可能) =======================
-    const SPONSOR_CONFIG = {
-      bannerImage: "https://placehold.co/800x200/3b82f6/white?text=Hiroshima+Ad+Space+%7C+Your+Banner", // 画像URLを差し替え
-      linkUrl: "https://www.hiroshima-travel.jp/partner",                                         // クリック先URL
-      altText: "Sponsor Banner - Hiroshima Travel",
-      captionText: "✨ この枠はスポンサー広告です | 掲載をご希望の方はお問い合わせください ✨"
-    };
-
-    // 多言語ガイド
-    const sponsorGuideMsg = {
-      en: "📢 Change banner: edit SPONSOR_CONFIG (image + link) in <script>",
-      ja: "📢 バナー変更: SPONSOR_CONFIG内の画像URL・リンクを編集してください",
-      zh: "📢 更换横幅: 修改 SPONSOR_CONFIG 中的图片URL和链接"
-    };
-
-    // --- グローバル状態 ---
     let currentLang = "en";
-    let currentSpotId = null;     // null = 一覧表示, 数値 = 詳細表示中
+    let currentSpotId = null;
 
     const appDiv = document.getElementById("app");
 
-    // スポンサーブロック生成 (showGuide: 編集ガイドを表示するか)
-    function renderSponsorBlock(showGuide = true) {
-      let guideHtml = "";
-      if (showGuide) {
-        const guideText = sponsorGuideMsg[currentLang] || sponsorGuideMsg.en;
-        guideHtml = `
-          <div class="sponsor-note">
-            <span class="sponsor-guide">🛠️ ${guideText}</span>
-            <span class="copy-tip" onclick="copySponsorConfig()">📋 設定をコピー</span>
+    function renderMainPage() {
+      const cardsHtml = spots.map(spot => `
+        <div class="card" data-id="${spot.id}">
+          <img class="card-img" src="${spot.img}" alt="${spot.nameEn}" loading="lazy">
+          <div class="card-content">
+            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.nameEn}</div>
+            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.nameJa}</div>
+            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.nameZh}</div>
+            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.descEn.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.descJa.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.descZh.substring(0, 60)}...</div>
           </div>
-        `;
-      }
-      return `
+        </div>
+      `).join("");
+
+      const sponsorHtml = `
         <div class="sponsor">
-          <a href="${SPONSOR_CONFIG.linkUrl}" target="_blank" rel="noopener noreferrer" class="sponsor-banner">
-            <img src="${SPONSOR_CONFIG.bannerImage}" alt="${SPONSOR_CONFIG.altText}" loading="lazy">
-          </a>
-          <div class="sponsor-caption">${SPONSOR_CONFIG.captionText}</div>
-          ${guideHtml}
+          ⭐ スポンサー Sponsor 赞助商 ⭐<br>
+          <a href="#">あなたの広告 here → お問い合わせ</a>
         </div>
       `;
-    }
-
-    // 設定コピー用 (window経由)
-    window.copySponsorConfig = function() {
-      const sample = `// スポンサー設定編集例 (script内のSPONSOR_CONFIG)
-const SPONSOR_CONFIG = {
-  bannerImage: "https://your-image-url.jpg",
-  linkUrl: "https://your-site.com",
-  altText: "Your brand",
-  captionText: "あなたの広告メッセージ"
-};`;
-      navigator.clipboard.writeText(sample).then(() => {
-        const msg = currentLang === "en" ? "Sponsor config template copied! Edit SPONSOR_CONFIG." :
-                    currentLang === "ja" ? "スポンサー設定テンプレートをコピーしました。SPONSOR_CONFIGを編集してください。" :
-                    "赞助商配置模板已复制，请编辑 SPONSOR_CONFIG。";
-        alert(msg);
-      }).catch(() => alert("手動でコピーしてください"));
-    };
-
-    // 一覧ページ描画
-    function renderMainPage() {
-      const cardsHtml = spots.map(spot => {
-        const title = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
-        const shortDesc = (currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh).substring(0, 65) + "...";
-        return `
-          <div class="card" data-id="${spot.id}">
-            <img class="card-img" src="${spot.img}" alt="${title}" loading="lazy" onerror="this.src='https://placehold.co/400x200?text=Image+Not+Found'">
-            <div class="card-content">
-              <div class="card-title">${escapeHtml(title)}</div>
-              <div class="card-desc" style="opacity:0.8;">${escapeHtml(shortDesc)}</div>
-            </div>
-          </div>
-        `;
-      }).join("");
 
       appDiv.innerHTML = `
-        ${renderSponsorBlock(true)}
+        ${sponsorHtml}
         <div class="card-grid">
           ${cardsHtml}
         </div>
-        ${renderSponsorBlock(true)}
+        ${sponsorHtml}
       `;
-      currentSpotId = null;
+
+      document.querySelectorAll(".card").forEach(card => {
+        card.addEventListener("click", (e) => {
+          const id = parseInt(card.dataset.id);
+          showDetail(id);
+        });
+      });
     }
 
-    // 詳細ページ描画
-    function renderDetailPage(spot) {
-      if (!spot) {
-        renderMainPage();
-        return;
-      }
-      const name = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
-      const desc = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
-      const access = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
-      const descLabel = currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍";
-      const accessLabel = currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通";
-      const officialLabel = currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站";
+    function showDetail(id) {
+      const spot = spots.find(s => s.id === id);
+      if (!spot) return;
+      currentSpotId = id;
+
+      const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
+      const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
+      const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
+
+      const sponsorHtml = `
+        <div class="sponsor">
+          🔹 スポンサー Sponsor 🔹<br>
+          <a href="#">広告スペース | Ad Space</a>
+        </div>
+      `;
 
       appDiv.innerHTML = `
-        <button class="back-btn" id="backButton">← ${currentLang === "en" ? "Back to list" : currentLang === "ja" ? "一覧に戻る" : "返回列表"}</button>
-        ${renderSponsorBlock(false)}
-        <img class="detail-img" src="${spot.img}" alt="${name}" onerror="this.src='https://placehold.co/800x400?text=No+Image'">
-        <h2>${escapeHtml(name)}</h2>
-        <p><strong>📝 ${descLabel}</strong><br>${escapeHtml(desc)}</p>
-        <p><strong>🚆 ${accessLabel}</strong><br>${escapeHtml(access)}</p>
-        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener noreferrer">
-          🔗 ${officialLabel}
+        <button class="back-btn" id="backButton">← Back</button>
+        ${sponsorHtml}
+        <img class="detail-img" src="${spot.img}" alt="${nameKey}">
+        <h2>${nameKey}</h2>
+        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${descKey}</p>
+        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${accessKey}</p>
+        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
+          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
         </a>
-        ${renderSponsorBlock(false)}
+        ${sponsorHtml}
       `;
 
-      const backBtn = document.getElementById("backButton");
-      if (backBtn) {
-        backBtn.addEventListener("click", () => {
-          currentSpotId = null;
-          renderMainPage();
-        });
-      }
-    }
-
-    // XSS対策簡単エスケープ
-    function escapeHtml(str) {
-      if (!str) return "";
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
+      document.getElementById("backButton").addEventListener("click", () => {
+        renderMainPage();
+        updateLanguageOnPage();
       });
     }
 
-    // 言語・テーマ変更時の再描画
-    function refreshUI() {
-      if (currentSpotId !== null) {
-        const spot = spots.find(s => s.id === currentSpotId);
-        if (spot) renderDetailPage(spot);
-        else renderMainPage();
-      } else {
-        renderMainPage();
-      }
-    }
-
-    // スポット表示 (詳細へ)
-    function showSpotById(id) {
-      const spot = spots.find(s => s.id === id);
-      if (spot) {
-        currentSpotId = id;
-        renderDetailPage(spot);
-      } else {
-        console.warn("Spot not found:", id);
-        renderMainPage();
-      }
-    }
-
-    // イベント委任 (カードクリックを拾う)
-    function bindGlobalEvents() {
-      appDiv.addEventListener("click", (e) => {
-        // カード自体またはカード内の子要素から親.cardを探す
-        let targetEl = e.target.closest('.card');
-        if (targetEl && targetEl.dataset.id) {
-          const id = parseInt(targetEl.dataset.id);
-          if (!isNaN(id)) {
-            e.preventDefault();
-            showSpotById(id);
-          }
+    function updateLanguageOnPage() {
+      // テキストの切り替え
+      document.querySelectorAll(".lang-text").forEach(el => {
+        const langAttr = el.getAttribute("data-lang");
+        if (langAttr === currentLang) {
+          el.classList.add("active-lang");
+        } else {
+          el.classList.remove("active-lang");
         }
       });
-    }
 
-    // テーマ切り替え＆localStorage
-    function initTheme() {
-      const saved = localStorage.getItem("theme");
-      if (saved === "light") {
-        document.body.classList.remove("dark");
-        document.body.classList.add("light");
+      // 詳細ページで表示中の場合、再描画
+      if (currentSpotId) {
+        showDetail(currentSpotId);
       } else {
-        document.body.classList.add("dark");
+        renderMainPage(); // 再描画で言語反映
       }
-      document.getElementById("darkModeBtn").addEventListener("click", () => {
-        document.body.classList.remove("light");
-        document.body.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      });
-      document.getElementById("lightModeBtn").addEventListener("click", () => {
-        document.body.classList.remove("dark");
-        document.body.classList.add("light");
-        localStorage.setItem("theme", "light");
-      });
     }
 
-    // 言語ボタン
-    function initLangButtons() {
-      document.getElementById("langEn").addEventListener("click", () => {
-        currentLang = "en";
-        refreshUI();
-      });
-      document.getElementById("LangJa").addEventListener("click", () => {
-        currentLang = "ja";
-        refreshUI();
-      });
-      document.getElementById("langZh").addEventListener("click", () => {
-        currentLang = "zh";
-        refreshUI();
-      });
+    function setLang(lang) {
+      currentLang = lang;
+      updateLanguageOnPage();
     }
 
-    // 初期化
-    function init() {
-      initTheme();
-      initLangButtons();
-      bindGlobalEvents();
-      renderMainPage();
+    // イベントリスナー
+    document.getElementById("darkModeBtn").addEventListener("click", () => {
+      document.body.classList.remove("light");
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    });
+    document.getElementById("lightModeBtn").addEventListener("click", () => {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+      localStorage.setItem("theme", "light");
+    });
+    document.getElementById("langEn").addEventListener("click", () => setLang("en"));
+    document.getElementById("LangJa").addEventListener("click", () => setLang("ja"));
+    document.getElementById("langZh").addEventListener("click", () => setLang("zh"));
+
+    // 保存テーマ読み込み
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.add("dark");
     }
 
-    init();
+    // 初期表示
+    renderMainPage();
   </script>
 </body>
 </html>
