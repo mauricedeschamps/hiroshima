@@ -1,11 +1,10 @@
-const CACHE_NAME = 'hiroshima-pwa-v1';
+const CACHE_NAME = 'cyprus-guide-v1';
 const urlsToCache = [
   '/',
-  'index.html',
-  'manifest.json',
-  // アイコンはあなたの環境に合わせてパスを変更してください
-  'icons/icon-192.jpg',
-  'icons/icon-512.jpg'
+  '/index.html',
+  '/manifest.json',
+  '/icon-192.png',
+  '/icon-512.png'
 ];
 
 self.addEventListener('install', event => {
@@ -15,18 +14,14 @@ self.addEventListener('install', event => {
         console.log('Opened cache');
         return cache.addAll(urlsToCache);
       })
+      .catch(err => console.error('Cache addAll failed:', err))
   );
 });
 
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      })
+      .then(response => response || fetch(event.request))
   );
 });
 
@@ -36,7 +31,7 @@ self.addEventListener('activate', event => {
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cacheName => {
-          if (cacheWhitelist.indexOf(cacheName) === -1) {
+          if (!cacheWhitelist.includes(cacheName)) {
             return caches.delete(cacheName);
           }
         })
