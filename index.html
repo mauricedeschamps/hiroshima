@@ -1,480 +1,245 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hiroshima Travel Guide | 广岛旅行助手</title>
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1e1e2f">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icons/icon-192.jpg">
+  <title>Cyprus Travel Guide</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1e3a5f">
+  <meta name="description" content="Discover the best places, activities and food in Cyprus">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      transition: background-color 0.3s, color 0.2s;
+    /* 既存のスタイル（変更なし）*/
+    * { margin: 0; padding: 0; box-sizing: border-box; transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease; }
+    :root {
+      --bg-body: #fef7e8; --bg-card: #ffffff; --text-primary: #2c3e2f; --text-secondary: #5a6e4a;
+      --accent: #1e88e5; --accent-dark: #0b5e8a; --border: #e0d6c2; --header-bg: #ffffffcc;
+      --footer-bg: #f3efe4; --shadow: rgba(0, 0, 0, 0.05); --btn-bg: #1e88e5; --btn-text: white;
+      --sponsor-bg: #ffffffcc; --sponsor-text: #5a6e4a; --install-bg: #e3f2fd; --install-text: #0b5e8a;
     }
-
-    body {
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
-      padding: 0;
-      margin: 0;
-    }
-
-    /* Dark mode (default) */
     body.dark {
-      background-color: #121212;
-      color: #e0e0e0;
+      --bg-body: #1e2a2e; --bg-card: #2d3e40; --text-primary: #e9f5f0; --text-secondary: #cbd5c4;
+      --accent: #4aa3df; --accent-dark: #2c7cb6; --border: #3e5a5c; --header-bg: #1e2a2ecc;
+      --footer-bg: #1e2a2e; --shadow: rgba(0, 0, 0, 0.2); --btn-bg: #4aa3df; --btn-text: #1e2a2e;
+      --sponsor-bg: #2d3e40cc; --sponsor-text: #cbd5c4; --install-bg: #2c4a5e; --install-text: #e9f5f0;
     }
-
-    body.light {
-      background-color: #f5f7fa;
-      color: #1f2937;
+    body { background-color: var(--bg-body); color: var(--text-primary); font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif; line-height: 1.5; padding: 0; margin: 0; }
+    header { background: var(--header-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+    .logo h1 { font-size: 1.6rem; letter-spacing: -0.5px; background: linear-gradient(135deg, var(--accent), #f4a261); background-clip: text; -webkit-background-clip: text; color: transparent; }
+    .controls { display: flex; gap: 0.8rem; }
+    button { background: var(--bg-card); border: 1px solid var(--border); padding: 0.5rem 1rem; border-radius: 40px; font-weight: 500; cursor: pointer; color: var(--text-primary); transition: 0.1s; }
+    button:hover { background: var(--accent); color: white; border-color: var(--accent); }
+    .install-banner {
+      background: var(--install-bg); color: var(--install-text); padding: 0.75rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border); font-size: 0.9rem;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    /* header & footer */
-    header, footer {
-      padding: 1rem;
-      text-align: center;
-    }
-
-    body.dark header, body.dark footer {
-      background-color: #1e1e2f;
-      border-bottom: 1px solid #2c2c3a;
-    }
-
-    body.light header, body.light footer {
-      background-color: #ffffff;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    footer {
-      border-top: 1px solid;
-      margin-top: 2rem;
-      font-size: 0.85rem;
-    }
-
-    /* controls */
-    .controls {
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    button {
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      border: none;
-      font-weight: 500;
-      cursor: pointer;
-      background-color: #3b82f6;
-      color: white;
-    }
-
-    body.dark button {
-      background-color: #2563eb;
-    }
-
-    button.lang-btn {
-      background-color: #334155;
-    }
-
-    body.dark button.lang-btn {
-      background-color: #475569;
-    }
-
-    /* sponsor 区块样式 - 支持图片广告 */
-    .sponsor {
-      text-align: center;
-      margin: 1.5rem 0;
-      padding: 0.75rem;
-      background-color: rgba(0,0,0,0.05);
-      border-radius: 1rem;
-      font-size: 0.85rem;
-      transition: all 0.2s;
-    }
-    body.dark .sponsor {
-      background-color: rgba(255,255,255,0.05);
-    }
-    .sponsor a {
-      color: #3b82f6;
-      text-decoration: none;
-    }
-    .sponsor-img {
-      max-width: 100%;
-      border-radius: 0.75rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
-    .sponsor-text {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-
-    /* card grid */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin: 1.5rem 0;
-    }
-
-    .card {
-      border-radius: 1.5rem;
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    body.dark .card {
-      background-color: #1e1e2f;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    body.light .card {
-      background-color: white;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-    }
-
-    .card-img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      background-color: #cbd5e1;
-    }
-
-    .card-content {
-      padding: 1rem;
-    }
-
-    .card-title {
-      font-size: 1.25rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    /* detail page */
-    .detail-img {
-      width: 100%;
-      max-height: 320px;
-      object-fit: cover;
-      border-radius: 1.5rem;
-      margin: 1rem 0;
-    }
-
-    .back-btn {
-      margin: 1rem 0;
-      display: inline-block;
-    }
-
-    .official-link {
-      display: inline-block;
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      background-color: #3b82f6;
-      color: white;
-      text-decoration: none;
-      border-radius: 2rem;
-    }
-
-    .lang-text {
-      display: none;
-    }
-
-    .lang-text.active-lang {
-      display: block;
-    }
-
-    h2.lang-text, p.lang-text, .card-title.lang-text, .card-desc.lang-text {
-      display: none;
-    }
-
-    h2.lang-text.active-lang, p.lang-text.active-lang, .card-title.lang-text.active-lang, .card-desc.lang-text.active-lang {
-      display: block;
+    .install-banner.hidden { display: none; }
+    .install-banner p { margin: 0; }
+    .install-btn { background: var(--accent); color: white; border: none; padding: 0.4rem 1rem; border-radius: 30px; cursor: pointer; font-weight: 500; }
+    .close-banner { background: transparent; border: none; font-size: 1.2rem; cursor: pointer; color: inherit; padding: 0 0.5rem; }
+    main { max-width: 1300px; margin: 2rem auto; padding: 0 1.5rem; }
+    .map-container { margin: 1.5rem 0 2rem 0; border-radius: 28px; overflow: hidden; box-shadow: 0 8px 20px var(--shadow); border: 1px solid var(--border); background: var(--bg-card); }
+    .map-container iframe { width: 100%; height: 350px; border: 0; display: block; }
+    .sponsor { background: var(--sponsor-bg); backdrop-filter: blur(4px); border-radius: 24px; padding: 1rem; margin: 1.5rem 0; text-align: center; border: 1px solid var(--border); color: var(--sponsor-text); }
+    .sponsor a { text-decoration: none; display: inline-block; }
+    .sponsor-image { max-width: 100%; height: auto; max-height: 100px; border-radius: 12px; margin-bottom: 0.5rem; }
+    .sponsor .sponsor-label { font-size: 0.7rem; text-transform: uppercase; opacity: 0.7; margin-bottom: 0.5rem; }
+    .sponsor p { margin: 0; font-size: 0.9rem; letter-spacing: 1px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem; }
+    .card { background: var(--bg-card); border-radius: 28px; overflow: hidden; box-shadow: 0 8px 20px var(--shadow); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid var(--border); }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px var(--shadow); }
+    .card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .card-content { padding: 1.2rem; }
+    .card-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .detail-container { max-width: 900px; margin: 2rem auto; background: var(--bg-card); border-radius: 32px; padding: 2rem; border: 1px solid var(--border); }
+    .detail-img { width: 100%; max-height: 450px; object-fit: cover; border-radius: 24px; margin-bottom: 1.5rem; }
+    .back-btn { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; background: var(--accent); color: white; border: none; }
+    .official-link { display: inline-block; margin-top: 1rem; background: var(--accent-dark); color: white; padding: 0.6rem 1.2rem; border-radius: 40px; text-decoration: none; font-weight: 500; }
+    .official-link:hover { opacity: 0.9; }
+    footer { background: var(--footer-bg); border-top: 1px solid var(--border); text-align: center; padding: 2rem 1rem; margin-top: 3rem; font-size: 0.9rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 680px) {
+      header { flex-direction: column; text-align: center; }
+      .card-grid { gap: 1.2rem; }
+      .map-container iframe { height: 250px; }
+      .sponsor-image { max-height: 80px; }
     }
   </style>
 </head>
-<body class="dark">
+<body>
   <header>
+    <div class="logo"><h1>🇨🇾 Michelle's<br>Cyprus Escape</h1></div>
     <div class="controls">
-      <div>
-        <button id="darkModeBtn" aria-label="Dark mode">🌙 Dark</button>
-        <button id="lightModeBtn" aria-label="Light mode">☀️ Light</button>
-      </div>
-      <div>
-        <button id="langEn" class="lang-btn">🇬🇧 EN</button>
-        <button id="LangJa" class="lang-btn">🇯🇵 日本語</button>
-        <button id="langZh" class="lang-btn">🇨🇳 中文</button>
-      </div>
+      <button id="langBtn" aria-label="Switch language">🇬🇷 Ελληνικά</button>
+      <button id="themeBtn" aria-label="Switch theme">🌙 Dark / ☀️ Light</button>
     </div>
-    <h1>
-      <span class="lang-text active-lang" data-lang="en">Hiroshima Travel Guide</span>
-      <span class="lang-text" data-lang="ja">広島トラベルガイド</span>
-      <span class="lang-text" data-lang="zh">广岛旅行指南</span>
-    </h1>
   </header>
 
- <style>.pp-KZJED5PPHWTWE{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
-  <form action="https://www.paypal.com/ncp/payment/KZJED5PPHWTWE" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
-    <input class="pp-KZJED5PPHWTWE" type="submit" value="Buy It Now" />
-    <img src=https://www.paypalobjects.com/images/Debit_Credit_APM.svg alt="cards" />
-    <section style="font-size: 0.75rem;"> Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
-  </form>
-</div>
-
-<div id="paypal-container-KZJED5PPHWTWE"></div>
-<script>
-  paypal.HostedButtons({
-    hostedButtonId: "KZJED5PPHWTWE",
-  }).render("#paypal-container-KZJED5PPHWTWE")
-</script>
-
-
-  <div class="container" id="app">
-    <!-- 动态内容 -->
+  <div id="installBanner" class="install-banner hidden">
+    <p>📱 アプリとしてインストールすると、より快適にご利用いただけます。</p>
+    <div>
+      <button id="installAppBtn" class="install-btn">インストール</button>
+      <button id="closeBannerBtn" class="close-banner">✕</button>
+    </div>
   </div>
 
-<div>
- 
+  <main id="app"></main>
+
   <footer>
-    <div>Contact us</div>
-    <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>
-    <div style="margin-top:15px;font-size:0.9em;">© 2026 Hiroshima Travel Guide. All rights reserved.</div>
+    Contact us<br>
+    <a href="mailto:mementomorikatsu@gmail.com">mementomorikatsu@gmail.com</a>
   </footer>
 
   <script>
-    // ======================== 🎯 赞助商配置区域 (请在这里修改图片和链接) ========================
-    // 说明：您可以自由更换 sponsorImageUrl 和 sponsorLinkUrl，支持图片广告展示。
-    // 如果 sponsorImageUrl 留空，则显示默认的文本赞助链接；否则展示图片广告 + 辅助文本。
-    // 图片建议尺寸：宽 600~800px，比例 16:9 或 4:3 效果最佳，URL 可以是任何网络图片地址。
-    // ----------------------------------------------------------------------------------------
+    // ---------- スポンサー情報 ----------
     const SPONSOR_CONFIG = {
-      // 赞助商图片地址 (推荐使用 https 图片)  例如: "https://example.com/your-ad-banner.jpg"
-      sponsorImageUrl: "https://www.nisikido.co.jp/assets/img/kasi/img-momiji.jpg",   //  ← 在这里填入图片URL (若留空则显示文字广告)
-      // 赞助商点击链接 (通常指向官网或推广页面)
-      sponsorLinkUrl: "https://www.nisikido.co.jp/kasi/momiji/",  //  ← 可换成您的推广链接
-      // 广告备用文本 / 公司名称
-      sponsorAltText: "Visit Hiroshima Official Partner",
-      // 辅助显示文字（显示在图片下方或纯文本模式下显示）
-      sponsorMessageEn: "⭐ Special Offer: Discover Hiroshima with local experts!",
-      sponsorMessageJa: "⭐ 広島旅行をお得に！地元情報満載",
-      sponsorMessageZh: "⭐ 广岛旅行特惠：在地深度体验推荐"
+      imageUrl: "https://etc-corporate.org/uploads/2019/01/Cyprus-website.png",
+      linkUrl: "https://www.visitcyprus.com/",
+      altText: "Discover Cyprus"
     };
-    // ======================================================================================
 
-    // 景点数据 (12个广岛必游)
-    const spots = [
-      { id: 1, nameEn: "Itsukushima Shrine", nameJa: "厳島神社", nameZh: "严岛神社", descEn: "Famous floating torii gate on Miyajima island. UNESCO World Heritage.", descJa: "宮島にある海上に浮かぶ大鳥居が有名な世界遺産。", descZh: "宫岛上有名的海上大鸟居，世界遗产。", img: "https://static.gltjp.com/glt/data/article/21000/20480/20231016_140610_99d443db_w1920.webp", official: "https://www.miyajima.or.jp/sp/", accessEn: "JR Miyajimaguchi + ferry", accessJa: "JR宮島口駅からフェリー", accessZh: "JR宫岛口站+渡轮" },
-      { id: 2, nameEn: "Hiroshima Peace Memorial", nameJa: "原爆ドーム", nameZh: "原子弹爆炸圆顶屋", descEn: "Symbol of peace and UNESCO site. Ruins of the atomic bombing.", descJa: "平和の象徴、世界遺産。被爆遺構。", descZh: "和平象征，世界遗产。核爆遗址。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNjAFbvTaoTwTmL-olaxR2eoJdaJa22fhKbeoK60cPqg&s=10", official: "https://hpmmuseum.jp/", accessEn: "Genbaku Dome-mae tram stop", accessJa: "原爆ドーム前電停", accessZh: "原子弹爆炸圆顶屋前电车站" },
-      { id: 3, nameEn: "Hiroshima Castle", nameJa: "広島城", nameZh: "广岛城", descEn: "Reconstructed castle with samurai history & museum.", descJa: "復元された天守閣。武家文化の博物館。", descZh: "重建的天守阁，武士文化博物馆。", img: "https://hiroshimacastle.jp/rijo/wp-content/themes/rijo-castle/assets/images/castle/castle-list_02.jpg", official: "https://hiroshimacastle.jp/", accessEn: "Kamiyacho-nishi tram", accessJa: "紙屋町西電停", accessZh: "纸屋町西电车站" },
-      { id: 4, nameEn: "Shukkeien Garden", nameJa: "縮景園", nameZh: "缩景园", descEn: "Beautiful Japanese landscape garden from Edo period.", descJa: "江戸時代の美しい回遊式庭園。", descZh: "江户时代优美的回游式庭园。", img: "https://garden-guide.jp/photo/shukkeien/shukkeien02.jpg", official: "https://shukkeien.jp/", accessEn: "Shukkeien-mae tram", accessJa: "縮景園前電停", accessZh: "缩景园前电车站" },
-      { id: 5, nameEn: "Okonomimura", nameJa: "お好み村", nameZh: "御好村", descEn: "3 floors of Hiroshima-style okonomiyaki restaurants.", descJa: "広島風お好み焼きの専門店が集まるビル。", descZh: "广岛风味御好烧专门店大楼。", img: "https://tabiiro.jp/lpimg/gourmet/308582/main/img1.jpg", official: "http://www.okonomimura.jp/", accessEn: "Hatchobori tram", accessJa: "八丁堀電停", accessZh: "八丁堀电车站" },
-      { id: 6, nameEn: "Mitaki-dera Temple", nameJa: "三瀧寺", nameZh: "三泷寺", descEn: "Temple with waterfalls & autumn colors.", descJa: "滝と紅葉の寺。", descZh: "瀑布与红叶的寺庙。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXHhbU9piT5LVT5W8IpXe6nXE3VlkthNsMb_Nh0mKW3gb1hnFR0FAsUb0&s=10", official: "https://dive-hiroshima.com/explore/3320/", accessEn: "Mitaki Station + walk", accessJa: "三滝駅から徒歩", accessZh: "三泷站步行" },
-      { id: 7, nameEn: "Mazda Museum", nameJa: "マツダミュージアム", nameZh: "马自达博物馆", descEn: "Factory tour & car exhibition (reservation needed).", descJa: "工場見学と車の展示（要予約）。", descZh: "工厂参观与汽车展览（需预约）。", img: "https://gazoo.com/pages/contents/drive/museum/130826_9/img_mam_shosai_00.jpg", official: "https://www.mazda.com/ja/about/museum/", accessEn: "Mukainada Station", accessJa: "向洋駅", accessZh: "向洋站" },
-      { id: 8, nameEn: "Onomichi Temple Walk", nameJa: "尾道の寺めぐり", nameZh: "尾道寺庙巡礼", descEn: "Historic hillside temples & cat alley.", descJa: "坂の町、猫の細道と古寺。", descZh: "坡道之城、猫咪小路与古寺。", img: "https://shichibutsu.jp/img/temple/senkouji/slider01.jpg?b", official: "https://www.ononavi.jp/", accessEn: "JR Onomichi Station", accessJa: "JR尾道駅", accessZh: "JR尾道站" },
-      { id: 9, nameEn: "Sandankyo Valley", nameJa: "三段峡", nameZh: "三段峡", descEn: "Scenic gorge with waterfalls & boat ride.", descJa: "渓谷美とボート遊び。", descZh: "溪谷美景与乘船。", img: "https://cs-akiota.or.jp/app/wp-content/uploads/2021/07/2hour_kurobuchi.jpg", official: "https://dive-hiroshima.com/explore/46/", accessEn: "Bus from Hiroshima Station", accessJa: "広島駅からバス", accessZh: "广岛站巴士" },
-      { id: 10, nameEn: "Hiroshima Museum of Art", nameJa: "広島美術館", nameZh: "广岛美术馆", descEn: "European & Japanese modern art collection.", descJa: "西洋美術と日本近代美術。", descZh: "西洋美术与日本近代美术。", img: "https://www.hiroshima-museum.jp/guide/inc/images/index/pic_museum_front.jpg", official: "https://www.hiroshima-museum.jp/", accessEn: "Kamiyacho-nishi", accessJa: "紙屋町西", accessZh: "纸屋町西" },
-      { id: 11, nameEn: "Hiroshima Orizuru Tower", nameJa: "おりづるタワー", nameZh: "折鹤塔", descEn: "Rooftop view of Peace Dome & fold paper cranes.", descJa: "屋上展望台と折り鶴体験。", descZh: "屋顶观景台与折千纸鹤体验。", img: "https://www.orizurutower.jp/inc/common/img/company/orizuru.png", official: "https://www.orizurutower.jp/", accessEn: "Genbaku Dome-mae", accessJa: "原爆ドーム前", accessZh: "原子弹爆炸圆顶屋前" },
-      { id: 12, nameEn: "Miyajima Omotesando", nameJa: "宮島表参道", nameZh: "宫岛表参道", descEn: "Shopping street with momiji manju & oysters.", descJa: "もみじ饅頭や牡蠣の商店街。", descZh: "红叶馒头和牡蛎的商店街。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVtWfCkOETljYVaMmug4ipVZXWGaytkesr6pk64Vdc6uUNTXIuNWxyEmAX&s=10", official: "https://dive-hiroshima.com/explore/384/", accessEn: "Miyajima Pier", accessJa: "宮島桟橋", accessZh: "宫岛码头" }
+    // ---------- 多言語データ ----------
+    const langData = {
+      en: { back: "← Back to list", official: "Official Website" },
+      el: { back: "← Πίσω στη λίστα", official: "Επίσημη ιστοσελίδα" }
+    };
+
+    // 12個のスポット
+    const places = [
+      { id: 0, title_en: "Paphos Mosaics", title_el: "Ψηφιδωτά Πάφου", desc_en: "Stunning Roman floor mosaics in the House of Dionysus, UNESCO World Heritage.", desc_el: "Εκπληκτικά ρωμαϊκά ψηφιδωτά στην Οικία του Διονύσου, Μνημείο Παγκόσμιας Κληρονομιάς UNESCO.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmUIapqZv-RROP2GbJ9t-ZSL2ZsDNQzj3sHhoyD8FPxDGabBycad4MA0jo&s=10", official: "https://whc.unesco.org/en/list/79/" },
+      { id: 1, title_en: "Cape Greco National Park", title_el: "Εθνικό Πάρκο Κάβο Γκρέκο", desc_en: "Dramatic sea cliffs, crystal waters and natural sea caves near Ayia Napa.", desc_el: "Εντυπωσιακοί θαλάσσιοι βράχοι, κρυστάλλινα νερά και θαλάσσιες σπηλιές κοντά στην Αγία Νάπα.", image: "https://in-cyprus.philenews.com/wp-content/uploads/2020/03/11111111-696x464.jpg", official: "https://chooseyourcyprus.com/cape-greko-n-park/" },
+      { id: 2, title_en: "Church of Saint Lazarus", title_el: "Ιερός Ναός Αγίου Λαζάρου", desc_en: "Byzantine church in Larnaca where Lazarus was buried, beautiful iconostasis.", desc_el: "Βυζαντινή εκκλησία στη Λάρνακα όπου τάφηκε ο Λάζαρος, όμορφο τέμπλο.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBdxhMA4TZyw1Mk_34QAspbgelViXxiUeNHRFYm7VJ8JKC5YJlOAXagvU&s=10", official: "https://larnakaregion.com/directory/product/agios-lazaros-saint-lazarus" },
+      { id: 3, title_en: "Troodos Mountains & Byzantine Churches", title_el: "Βουνά Τροόδους & Βυζαντινές Εκκλησίες", desc_en: "Painted churches, cool climate, and traditional villages with trout taverns.", desc_el: "Τοιχογραφημένες εκκλησίες, δροσερό κλίμα και παραδοσιακά χωριά με ταβέρνες πέστροφας.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi2hgaXAtD6xn2yBPQ6BOXVrZ2PqyjI1N1Jiv_zjnAnibrTriD5tMpJTE&s=10", official: "https://whc.unesco.org/en/list/351/" },
+      { id: 4, title_en: "Aphrodite's Rock (Petra tou Romiou)", title_el: "Πέτρα του Ρωμιού", desc_en: "Mythical birthplace of Aphrodite, stunning sunset spot near Paphos.", desc_el: "Μυθική γενέτειρα της Αφροδίτης, εκπληκτικό σημείο ηλιοβασιλέματος κοντά στην Πάφο.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8p1e-2nGxu864CGwMcRaCLBfFcrhCY7gceGfhlbjvva1F3QWd389LZ4Vi&s=10", official: "https://theislandofcyprus.com/aphrodite-rock/" },
+      { id: 5, title_en: "Kourion Ancient Theatre", title_el: "Αρχαίο Θέατρο Κουρίου", desc_en: "Greco-Roman theater overlooking the Mediterranean, well-preserved mosaics.", desc_el: "Ελληνορωμαϊκό θέατρο με θέα στη Μεσόγειο, καλοδιατηρημένα ψηφιδωτά.", image: "https://www.greekdramafest.com/wp-content/themes/yootheme/cache/6f/DSL_6720-6f113671.jpeg", official: "https://www.greekdramafest.com/venues/curium-ancient-theatre/ " },
+      { id: 6, title_en: "Cyprus Archaeological Museum", title_el: "Αρχαιολογικό Μουσείο Κύπρου", desc_en: "Largest archaeological museum in Nicosia, treasures from Neolithic to Roman.", desc_el: "Το μεγαλύτερο αρχαιολογικό μουσείο στη Λευκωσία, θησαυροί από τη νεολιθική έως τη ρωμαϊκή εποχή.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZqTdj9r14axngzq8l49stx_SbdUOKfw9FQksMEp5NWrsZmRSeAWSPBqiS&s=10", official: "https://www.visitcyprus.com/discover-cyprus/culture/museums-galleries/cyprus-museum/ " },
+      { id: 7, title_en: "Lefkara Village & Lace", title_el: "Λεύκαρα & κέντημα", desc_en: "Famous for silver filigree and handmade Lefkaritiko lace, traditional architecture.", desc_el: "Διάσημο για ασημένια φιλιγκράν και χειροποίητο Λευκαρίτικο κέντημα, παραδοσιακή αρχιτεκτονική.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpkTBys0D65teMcvghrbWXeMxin45DDHkIw58QBN6Y6ds-uUvwFUC_FG0&s=10", official: "https://ich.unesco.org/en/RL/lefkara-laces-or-lefkaritika-00255" },
+      { id: 8, title_en: "Meze Feast", title_el: "Κυπριακό Μεζέ", desc_en: "A parade of small dishes: dips, grilled halloumi, fresh seafood, and slow-cooked meat.", desc_el: "Μια παρέλαση μικρών πιάτων: ντιπ, ψητό χαλλούμι, φρέσκα θαλασσινά και κρέας με αργό μαγείρεμα.", image: "https://cdn.loveandlemons.com/wp-content/uploads/2022/08/mezze-platter-3.jpg", official: "https://www.olivemagazine.com/recipes/collection/best-ever-middle-eastern-mezze-recipes/" },
+      { id: 9, title_en: "Halloumi Cheese", title_el: "Χαλλούμι", desc_en: "Cypriot semi-hard cheese, perfect grilled or fried, unique taste.", desc_el: "Κυπριακό ημίσκληρο τυρί, ιδανικό για ψήσιμο ή τηγάνισμα, μοναδική γεύση.", image: "https://www.mygreekdish.com/wp-content/uploads/2023/04/Pan-fried-Halloumi-recipe.jpeg", official: "https://www.olivemagazine.com/recipes/collection/halloumi-recipes/" },
+      { id: 10, title_en: "Souvlaki & Kleftiko", title_el: "Σουβλάκι & Κλεφτικό", desc_en: "Souvlaki: grilled skewers in pita. Kleftiko: lamb slow-cooked in clay oven, melt-in-the-mouth.", desc_el: "Σουβλάκι: ψητά κομμάτια κρέατος σε πίτα. Κλεφτικό: αρνί ψητό σε ξυλόφουρνο, λιώνει στο στόμα.", image: "https://www.wholesomeyum.com/wp-content/uploads/2025/10/wholesomeyum-Lamb-Kleftiko-19.jpg", official: "https://www.tasteatlas.com/kleftiko" },
+      { id: 11, title_en: "Commandaria Wine", title_el: "Κουμανδαρία", desc_en: "World’s oldest named wine, sweet dessert wine from Troodos foothills.", desc_el: "Το παλαιότερο επώνυμο κρασί στον κόσμο, γλυκό επιδόρπιο κρασί από τους πρόποδες του Τροόδους.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGQFVcF_FgWpfIxF6UeI3PnhSZEy4-u0s3hQjKQeeTZvF0L5Xw4621HAc&s=10", official: "https://worldoffinewine.com/travel/commandaria-ancient-sweet-cyprus-wine" }
     ];
 
-    let currentLang = "en";
-    let currentSpotId = null;      // 当前是否在详情页，存储ID；null表示主页
+    let currentLang = 'en', currentTheme = 'dark', showingDetail = false, selectedId = null;
+    const app = document.getElementById('app'), langBtn = document.getElementById('langBtn'), themeBtn = document.getElementById('themeBtn');
 
-    const appDiv = document.getElementById("app");
+    // ---------- PWAインストール関連 ----------
+    let deferredPrompt = null;
+    const installBanner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installAppBtn');
+    const closeBannerBtn = document.getElementById('closeBannerBtn');
 
-    // ---------- 赞助商区块渲染函数 (根据SPONSOR_CONFIG动态生成) ----------
-    function renderSponsorBlock() {
-      // 获取当前语言的消息文本
-      let sponsorMsg = "";
-      if (currentLang === "en") sponsorMsg = SPONSOR_CONFIG.sponsorMessageEn;
-      else if (currentLang === "ja") sponsorMsg = SPONSOR_CONFIG.sponsorMessageJa;
-      else sponsorMsg = SPONSOR_CONFIG.sponsorMessageZh;
-      
-      const hasImage = SPONSOR_CONFIG.sponsorImageUrl && SPONSOR_CONFIG.sponsorImageUrl.trim() !== "";
-      const linkUrl = SPONSOR_CONFIG.sponsorLinkUrl || "#";
-      const altText = SPONSOR_CONFIG.sponsorAltText || "Sponsor";
-      
-      if (hasImage) {
-        // 图片广告模式
-        return `
-          <div class="sponsor">
-            <a href="${linkUrl}" target="_blank" rel="noopener noreferrer">
-              <img class="sponsor-img" src="${SPONSOR_CONFIG.sponsorImageUrl}" alt="${altText}" loading="lazy">
-            </a>
-            <div class="sponsor-text">✨ ${sponsorMsg} ✨</div>
-          </div>
-        `;
-      } else {
-        // 无图片时显示纯文本赞助链接
-        return `
-          <div class="sponsor">
-            ⭐ ${sponsorMsg} ⭐<br>
-            <a href="${linkUrl}" target="_blank" rel="noopener noreferrer">🔗 ${altText} | 赞助商链接 Sponsor</a>
-          </div>
-        `;
-      }
-    }
+    function showInstallBanner() { installBanner.classList.remove('hidden'); }
+    function hideInstallBanner() { installBanner.classList.add('hidden'); }
 
-    // 主页面渲染 (卡片列表)
-    function renderMainPage() {
-      // 重要: 将当前详情ID置空，确保返回后不再自动跳回详情
-      currentSpotId = null;
-      
-      const cardsHtml = spots.map(spot => `
-        <div class="card" data-id="${spot.id}">
-          <img class="card-img" src="${spot.img}" alt="${spot.nameEn}" loading="lazy">
-          <div class="card-content">
-            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.nameEn)}</div>
-            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.nameJa)}</div>
-            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.nameZh)}</div>
-            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.descEn.substring(0, 60))}...</div>
-            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.descJa.substring(0, 60))}...</div>
-            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.descZh.substring(0, 60))}...</div>
-          </div>
-        </div>
-      `).join("");
-      
-      const topSponsor = renderSponsorBlock();
-      const bottomSponsor = renderSponsorBlock();
-      
-      appDiv.innerHTML = `
-        ${topSponsor}
-        <div class="card-grid">
-          ${cardsHtml}
-        </div>
-        ${bottomSponsor}
-      `;
-      
-      // 绑定卡片点击事件 (进入详情)
-      document.querySelectorAll(".card").forEach(card => {
-        card.addEventListener("click", (e) => {
-          const id = parseInt(card.dataset.id);
-          showDetail(id);
-        });
-      });
-    }
-    
-    // 简单的防XSS辅助
-    function escapeHtml(str) {
-      if (!str) return "";
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-        return c;
-      });
-    }
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      showInstallBanner();
+      console.log('beforeinstallprompt fired – インストールバナーを表示します');
+    });
 
-    // 详情页渲染
-    function showDetail(id) {
-      const spot = spots.find(s => s.id === id);
-      if (!spot) return;
-      currentSpotId = id;   // 记录当前详情id
-      
-      const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
-      const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
-      const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
-      
-      const topSponsor = renderSponsorBlock();
-      const bottomSponsor = renderSponsorBlock();
-      
-      appDiv.innerHTML = `
-        <button class="back-btn" id="backButton">← Back</button>
-        ${topSponsor}
-        <img class="detail-img" src="${spot.img}" alt="${escapeHtml(nameKey)}">
-        <h2>${escapeHtml(nameKey)}</h2>
-        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${escapeHtml(descKey)}</p>
-        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${escapeHtml(accessKey)}</p>
-        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
-          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
-        </a>
-        ${bottomSponsor}
-      `;
-      
-      const backBtn = document.getElementById("backButton");
-      if (backBtn) {
-        // 修复关键bug: 返回时清除详情状态并重新渲染主页面
-        backBtn.addEventListener("click", () => {
-          renderMainPage();    // 内部已将 currentSpotId = null, 并完全刷新主页
-        });
-      }
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`ユーザー選択: ${outcome}`);
+      deferredPrompt = null;
+      hideInstallBanner();
+    });
+
+    closeBannerBtn.addEventListener('click', () => hideInstallBanner());
+    window.addEventListener('appinstalled', () => { console.log('アプリがインストールされました'); hideInstallBanner(); });
+
+    // 既存のテーマ・言語関数
+    function setTheme(theme) {
+      currentTheme = theme;
+      if (theme === 'dark') document.body.classList.add('dark');
+      else document.body.classList.remove('dark');
+      localStorage.setItem('theme', theme);
     }
-    
-    // 全局语言切换刷新函数 (保留对主页/详情两种状态的支持)
-    function updateLanguageOnPage() {
-      // 更新所有带 lang-text 类的元素 (卡片标题/简介等，主页面/详情页都适用)
-      document.querySelectorAll(".lang-text").forEach(el => {
-        const langAttr = el.getAttribute("data-lang");
-        if (langAttr === currentLang) {
-          el.classList.add("active-lang");
-        } else {
-          el.classList.remove("active-lang");
-        }
-      });
-      
-      // 如果当前处于详情页模式 (currentSpotId 不为 null)，则重新渲染详情页以刷新语言文本
-      if (currentSpotId !== null) {
-        showDetail(currentSpotId);
-      } else {
-        // 当前为主页: 需要重新渲染主页以更新卡片内的语言文本 (赞助商消息也会依赖currentLang)
-        renderMainPage();
-      }
-    }
-    
-    function setLang(lang) {
+    function toggleTheme() { setTheme(currentTheme === 'dark' ? 'light' : 'dark'); }
+    function setLanguage(lang) {
       currentLang = lang;
-      updateLanguageOnPage();
+      localStorage.setItem('language', lang);
+      langBtn.innerText = lang === 'en' ? '🇬🇷 Ελληνικά' : '🇬🇧 English';
+      renderPage();
+    }
+    function toggleLanguage() { setLanguage(currentLang === 'en' ? 'el' : 'en'); }
+
+    function createSponsorSection() {
+      const div = document.createElement('div'); div.className = 'sponsor';
+      const label = document.createElement('div'); label.className = 'sponsor-label'; label.textContent = '✨ Sponsored ✨';
+      div.appendChild(label);
+      if (SPONSOR_CONFIG.imageUrl && SPONSOR_CONFIG.imageUrl.trim()) {
+        const link = document.createElement('a'); link.href = SPONSOR_CONFIG.linkUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        const img = document.createElement('img'); img.src = SPONSOR_CONFIG.imageUrl; img.alt = SPONSOR_CONFIG.altText; img.className = 'sponsor-image';
+        link.appendChild(img); div.appendChild(link);
+      } else {
+        const link = document.createElement('a'); link.href = SPONSOR_CONFIG.linkUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
+        link.textContent = SPONSOR_CONFIG.linkUrl; div.appendChild(link);
+      }
+      const text = document.createElement('p'); text.textContent = "🌊 Plan your Cyprus journey with Michelle's Cyprus Escape — your ultimate travel companion. 🏛️";
+      div.appendChild(text);
+      return div;
     }
 
-    // 主题切换 & 本地存储
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      document.body.classList.remove("dark");
-      document.body.classList.add("light");
+    function renderList() {
+      const container = document.createElement('div');
+      container.appendChild(createSponsorSection());
+      const map = document.createElement('div'); map.className = 'map-container';
+      map.innerHTML = `<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52335.16761346227!2d33.31697017362666!3d35.166668402847065!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14de1742d62b65f3%3A0xf23bc7d53dd928a6!2sNicosia%2C%20Cyprus!5e0!3m2!1sen!2sus!4v1712134567890!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+      container.appendChild(map);
+      const isEn = currentLang === 'en';
+      const grid = document.createElement('div'); grid.className = 'card-grid';
+      places.forEach(p => {
+        const card = document.createElement('div'); card.className = 'card'; card.addEventListener('click', () => showDetail(p.id));
+        const img = document.createElement('img'); img.src = p.image; img.alt = isEn ? p.title_en : p.title_el; img.className = 'card-img';
+        const content = document.createElement('div'); content.className = 'card-content';
+        const title = document.createElement('h3'); title.className = 'card-title'; title.innerText = isEn ? p.title_en : p.title_el;
+        content.appendChild(title); card.appendChild(img); card.appendChild(content); grid.appendChild(card);
+      });
+      container.appendChild(grid);
+      container.appendChild(createSponsorSection());
+      app.innerHTML = ''; app.appendChild(container);
+    }
+
+    function renderDetail(id) {
+      const place = places.find(p => p.id === id); if (!place) return;
+      const isEn = currentLang === 'en';
+      const container = document.createElement('div'); container.className = 'detail-container';
+      const back = document.createElement('button'); back.className = 'back-btn'; back.innerText = langData[currentLang].back; back.addEventListener('click', () => history.back());
+      const img = document.createElement('img'); img.src = place.image; img.alt = isEn ? place.title_en : place.title_el; img.className = 'detail-img';
+      const title = document.createElement('h2'); title.innerText = isEn ? place.title_en : place.title_el;
+      const desc = document.createElement('p'); desc.style.margin = '1rem 0'; desc.innerText = isEn ? place.desc_en : place.desc_el;
+      const link = document.createElement('a'); link.href = place.official; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.className = 'official-link'; link.innerText = langData[currentLang].official;
+      container.appendChild(back); container.appendChild(img); container.appendChild(title); container.appendChild(desc); container.appendChild(link);
+      app.innerHTML = ''; app.appendChild(container);
+    }
+
+    function showDetail(id) { selectedId = id; showingDetail = true; renderDetail(id); const url = new URL(window.location); url.searchParams.set('id', id); window.history.pushState({ id, view: 'detail' }, '', url); }
+    function showList() { showingDetail = false; selectedId = null; renderList(); const url = new URL(window.location); url.searchParams.delete('id'); window.history.pushState({ view: 'list' }, '', url); }
+    function renderPage() { showingDetail && selectedId !== null ? renderDetail(selectedId) : renderList(); }
+    window.addEventListener('popstate', () => { const id = new URLSearchParams(window.location.search).get('id'); if (id && !isNaN(parseInt(id))) { selectedId = parseInt(id); showingDetail = true; renderDetail(selectedId); } else { showingDetail = false; selectedId = null; renderList(); } });
+
+    function init() {
+      const savedTheme = localStorage.getItem('theme'); setTheme(savedTheme === 'light' ? 'light' : 'dark');
+      const savedLang = localStorage.getItem('language'); setLanguage(savedLang === 'el' ? 'el' : 'en');
+      langBtn.addEventListener('click', toggleLanguage); themeBtn.addEventListener('click', toggleTheme);
+      const idParam = new URLSearchParams(window.location.search).get('id');
+      if (idParam && !isNaN(parseInt(idParam))) { selectedId = parseInt(idParam); showingDetail = true; renderDetail(selectedId); }
+      else { showingDetail = false; renderList(); }
+    }
+    init();
+
+    // サービスワーカーの登録（パスに注意）
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('ServiceWorker registered:', reg))
+        .catch(err => console.error('ServiceWorker registration failed:', err));
     } else {
-      document.body.classList.add("dark");
+      console.warn('Service Worker not supported');
     }
-    
-    document.getElementById("darkModeBtn").addEventListener("click", () => {
-      document.body.classList.remove("light");
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    });
-    document.getElementById("lightModeBtn").addEventListener("click", () => {
-      document.body.classList.remove("dark");
-      document.body.classList.add("light");
-      localStorage.setItem("theme", "light");
-    });
-    
-    // 语言按钮
-    document.getElementById("langEn").addEventListener("click", () => setLang("en"));
-    document.getElementById("LangJa").addEventListener("click", () => setLang("ja"));
-    document.getElementById("langZh").addEventListener("click", () => setLang("zh"));
-    
-    // 初始化渲染
-    renderMainPage();
-
-    // ---------- 附：如何修改赞助商图片和链接的在线指引 (控制台输出提示，便于维护) ----------
-    console.log("🔧 赞助商配置提示: 如需更换广告图片或链接，请修改代码顶部 SPONSOR_CONFIG 对象中的 sponsorImageUrl 和 sponsorLinkUrl 字段。");
-    console.log("📌 当前赞助商图片:", SPONSOR_CONFIG.sponsorImageUrl || "未设置 (将显示文字广告)");
   </script>
 </body>
 </html>
