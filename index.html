@@ -1,59 +1,69 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Hiroshima Travel Guide | 広島トラベルガイド</title>
+  <title>Hiroshima Travel Guide</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1e1e2f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icons/icon-192.jpg">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
   <style>
-    /* 既存のスタイルはそのまま（省略のため再掲はしませんが、実際のコードには全て含めます） */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       transition: background-color 0.3s, color 0.2s;
     }
+
     body {
       font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       line-height: 1.5;
       padding: 0;
       margin: 0;
-      overflow-x: hidden;
     }
+
+    /* Dark mode (default) */
     body.dark {
       background-color: #121212;
       color: #e0e0e0;
     }
+
     body.light {
       background-color: #f5f7fa;
       color: #1f2937;
     }
+
     .container {
       max-width: 800px;
       margin: 0 auto;
       padding: 1rem;
     }
+
+    /* header & footer */
     header, footer {
       padding: 1rem;
       text-align: center;
     }
+
     body.dark header, body.dark footer {
       background-color: #1e1e2f;
       border-bottom: 1px solid #2c2c3a;
     }
+
     body.light header, body.light footer {
       background-color: #ffffff;
       border-bottom: 1px solid #e2e8f0;
     }
+
     footer {
       border-top: 1px solid;
       margin-top: 2rem;
       font-size: 0.85rem;
     }
+
+    /* controls */
     .controls {
       display: flex;
       justify-content: flex-end;
@@ -61,6 +71,7 @@
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
+
     button {
       padding: 0.5rem 1rem;
       border-radius: 2rem;
@@ -70,43 +81,46 @@
       background-color: #3b82f6;
       color: white;
     }
+
     body.dark button {
       background-color: #2563eb;
     }
+
     button.lang-btn {
       background-color: #334155;
     }
+
     body.dark button.lang-btn {
       background-color: #475569;
     }
+
+    /* sponsor */
     .sponsor {
       text-align: center;
       margin: 1.5rem 0;
       padding: 0.75rem;
       background-color: rgba(0,0,0,0.05);
       border-radius: 1rem;
-      font-size: 0.85rem;
-      transition: all 0.2s;
+      font-size: 0.8rem;
     }
+
     body.dark .sponsor {
       background-color: rgba(255,255,255,0.05);
     }
+
     .sponsor a {
       color: #3b82f6;
       text-decoration: none;
     }
-    .sponsor-img {
-      max-width: 100%;
-      border-radius: 0.75rem;
-      margin-bottom: 0.5rem;
-      display: block;
-    }
+
+    /* card grid */
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
       margin: 1.5rem 0;
     }
+
     .card {
       border-radius: 1.5rem;
       overflow: hidden;
@@ -114,30 +128,38 @@
       transition: transform 0.2s;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
     body.dark .card {
       background-color: #1e1e2f;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
+
     body.light .card {
       background-color: white;
     }
+
     .card:hover {
       transform: translateY(-4px);
     }
+
     .card-img {
       width: 100%;
       height: 180px;
       object-fit: cover;
       background-color: #cbd5e1;
     }
+
     .card-content {
       padding: 1rem;
     }
+
     .card-title {
       font-size: 1.25rem;
       font-weight: bold;
       margin-bottom: 0.5rem;
     }
+
+    /* detail page */
     .detail-img {
       width: 100%;
       max-height: 320px;
@@ -145,10 +167,12 @@
       border-radius: 1.5rem;
       margin: 1rem 0;
     }
+
     .back-btn {
       margin: 1rem 0;
       display: inline-block;
     }
+
     .official-link {
       display: inline-block;
       margin-top: 1rem;
@@ -158,82 +182,21 @@
       text-decoration: none;
       border-radius: 2rem;
     }
+
     .lang-text {
       display: none;
     }
+
     .lang-text.active-lang {
       display: block;
     }
-    /* オーバーレイ (有料ゲート) */
-    .payment-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(10px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
+
+    h2.lang-text, p.lang-text, .card-title.lang-text, .card-desc.lang-text {
+      display: none;
     }
-    .payment-overlay::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 2px, transparent 2px, transparent 6px);
-      pointer-events: none;
-      z-index: 1;
-    }
-    .payment-card {
-      background: rgba(30, 30, 47, 0.95);
-      backdrop-filter: blur(4px);
-      border-radius: 2rem;
-      max-width: 480px;
-      width: 90%;
-      padding: 2rem 1.5rem;
-      text-align: center;
-      box-shadow: 0 25px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1);
-      z-index: 2;
-      border: 1px solid rgba(255,255,255,0.2);
-      animation: fadeScale 0.3s ease-out;
-    }
-    body.light .payment-card {
-      background: rgba(245, 247, 250, 0.98);
-      border: 1px solid rgba(0,0,0,0.2);
-      box-shadow: 0 25px 45px rgba(0,0,0,0.2);
-      color: #1f2937;
-    }
-    @keyframes fadeScale {
-      from { opacity: 0; transform: scale(0.96); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    .qr-title {
-      font-size: 1.7rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-    .qr-sub {
-      font-size: 0.9rem;
-      opacity: 0.8;
-      margin-bottom: 1.2rem;
-    }
-    .paypal-button-container {
-      margin: 1rem 0;
-      min-height: 150px;
-    }
-    .note-text {
-      font-size: 0.7rem;
-      margin-top: 1.2rem;
-      opacity: 0.7;
-    }
-    body.overlay-active {
-      overflow: hidden;
+
+    h2.lang-text.active-lang, p.lang-text.active-lang, .card-title.lang-text.active-lang, .card-desc.lang-text.active-lang {
+      display: block;
     }
   </style>
 </head>
@@ -258,45 +221,15 @@
   </header>
 
   <div class="container" id="app">
-    <!-- 動的コンテンツ -->
+    <!-- メインコンテンツがここに入る -->
   </div>
 
   <footer>
-    <div>Contact us</div>
-    <a href="mailto:mementomorikatsu@gmail.com" class="contact-link">mementomorikatsu@gmail.com</a>
-    <div style="margin-top:15px;font-size:0.9em;">© 2026 Hiroshima Travel Guide. All rights reserved.</div>
+    <p>Contact us<br>mementomorikatsu@gmail.com</p>
   </footer>
 
   <script>
-    // ======================== 🔧 設定エリア ========================
-    // ★★★ PayPal設定 ★★★
-    // PayPal Developer Dashboard から取得したクライアントIDを入力してください
-    const PAYPAL_CLIENT_ID = "YOUR_PAYPAL_CLIENT_ID";  // ← ここにClient IDを入れる
-    // 商品/プランID（任意: 定期購入などでなければ空欄でOK）
-    const PAYPAL_PLAN_ID = "";  // 単発決済の場合は空欄でOK（ボタンで金額を指定）
-    // 決済金額と通貨（単発決済の場合）
-    const PAYMENT_AMOUNT = "5.00";
-    const PAYMENT_CURRENCY = "USD";
-    // 決済成功後に呼び出される関数（支払い完了フラグを設定）
-    function onPaymentSuccess() {
-      localStorage.setItem("hiroshima_premium_unlocked", "true");
-      hidePaymentOverlay();
-      // 必要に応じて成功メッセージを表示
-      alert("決済が完了しました。コンテンツをご覧いただけます。");
-    }
-    // =============================================================
-
-    // スポンサー設定（自由に変更可）
-    const SPONSOR_CONFIG = {
-      sponsorImageUrl: "",
-      sponsorLinkUrl: "https://visithiroshima.net/",
-      sponsorAltText: "Visit Hiroshima Official Partner",
-      sponsorMessageEn: "⭐ Special Offer: Discover Hiroshima with local experts!",
-      sponsorMessageJa: "⭐ 広島旅行をお得に！地元情報満載",
-      sponsorMessageZh: "⭐ 广岛旅行特惠：在地深度体验推荐"
-    };
-
-    // スポットデータ（12個、省略）
+    // データ定義 (12スポット)
     const spots = [
       { id: 1, nameEn: "Itsukushima Shrine", nameJa: "厳島神社", nameZh: "严岛神社", descEn: "Famous floating torii gate on Miyajima island. UNESCO World Heritage.", descJa: "宮島にある海上に浮かぶ大鳥居が有名な世界遺産。", descZh: "宫岛上有名的海上大鸟居，世界遗产。", img: "https://placehold.co/600x400/1e3a8a/white?text=Miyajima", official: "https://visit-miyajima-japan.com/", accessEn: "JR Miyajimaguchi + ferry", accessJa: "JR宮島口駅からフェリー", accessZh: "JR宫岛口站+渡轮" },
       { id: 2, nameEn: "Hiroshima Peace Memorial", nameJa: "原爆ドーム", nameZh: "原子弹爆炸圆顶屋", descEn: "Symbol of peace and UNESCO site. Ruins of the atomic bombing.", descJa: "平和の象徴、世界遺産。被爆遺構。", descZh: "和平象征，世界遗产。核爆遗址。", img: "https://placehold.co/600x400/2d3748/white?text=Peace+Dome", official: "https://www.city.hiroshima.lg.jp/site/peace/", accessEn: "Genbaku Dome-mae tram stop", accessJa: "原爆ドーム前電停", accessZh: "原子弹爆炸圆顶屋前电车站" },
@@ -314,51 +247,39 @@
 
     let currentLang = "en";
     let currentSpotId = null;
+
     const appDiv = document.getElementById("app");
-    let paypalInitialized = false; // 重複初期化防止
-
-    // ユーティリティ
-    function escapeHtml(str) {
-      if (!str) return "";
-      return str.replace(/[&<>]/g, function(m) {
-        if (m === '&') return '&amp;';
-        if (m === '<') return '&lt;';
-        if (m === '>') return '&gt;';
-        return m;
-      });
-    }
-
-    function renderSponsorBlock() {
-      let sponsorMsg = "";
-      if (currentLang === "en") sponsorMsg = SPONSOR_CONFIG.sponsorMessageEn;
-      else if (currentLang === "ja") sponsorMsg = SPONSOR_CONFIG.sponsorMessageJa;
-      else sponsorMsg = SPONSOR_CONFIG.sponsorMessageZh;
-      const hasImage = SPONSOR_CONFIG.sponsorImageUrl && SPONSOR_CONFIG.sponsorImageUrl.trim() !== "";
-      const linkUrl = SPONSOR_CONFIG.sponsorLinkUrl || "#";
-      const altText = SPONSOR_CONFIG.sponsorAltText || "Sponsor";
-      if (hasImage) {
-        return `<div class="sponsor"><a href="${linkUrl}" target="_blank" rel="noopener"><img class="sponsor-img" src="${SPONSOR_CONFIG.sponsorImageUrl}" alt="${altText}" loading="lazy"></a><div class="sponsor-text">✨ ${sponsorMsg} ✨</div></div>`;
-      } else {
-        return `<div class="sponsor">⭐ ${sponsorMsg} ⭐<br><a href="${linkUrl}" target="_blank" rel="noopener">🔗 ${altText} | 赞助商链接 Sponsor</a></div>`;
-      }
-    }
 
     function renderMainPage() {
-      currentSpotId = null;
       const cardsHtml = spots.map(spot => `
         <div class="card" data-id="${spot.id}">
           <img class="card-img" src="${spot.img}" alt="${spot.nameEn}" loading="lazy">
           <div class="card-content">
-            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.nameEn)}</div>
-            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.nameJa)}</div>
-            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.nameZh)}</div>
-            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${escapeHtml(spot.descEn.substring(0, 60))}...</div>
-            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${escapeHtml(spot.descJa.substring(0, 60))}...</div>
-            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${escapeHtml(spot.descZh.substring(0, 60))}...</div>
+            <div class="card-title lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.nameEn}</div>
+            <div class="card-title lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.nameJa}</div>
+            <div class="card-title lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.nameZh}</div>
+            <div class="card-desc lang-text ${currentLang === 'en' ? 'active-lang' : ''}" data-lang="en">${spot.descEn.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'ja' ? 'active-lang' : ''}" data-lang="ja">${spot.descJa.substring(0, 60)}...</div>
+            <div class="card-desc lang-text ${currentLang === 'zh' ? 'active-lang' : ''}" data-lang="zh">${spot.descZh.substring(0, 60)}...</div>
           </div>
         </div>
       `).join("");
-      appDiv.innerHTML = `${renderSponsorBlock()}<div class="card-grid">${cardsHtml}</div>${renderSponsorBlock()}`;
+
+      const sponsorHtml = `
+        <div class="sponsor">
+          ⭐ スポンサー Sponsor 赞助商 ⭐<br>
+          <a href="#">あなたの広告 here → お問い合わせ</a>
+        </div>
+      `;
+
+      appDiv.innerHTML = `
+        ${sponsorHtml}
+        <div class="card-grid">
+          ${cardsHtml}
+        </div>
+        ${sponsorHtml}
+      `;
+
       document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", (e) => {
           const id = parseInt(card.dataset.id);
@@ -371,147 +292,62 @@
       const spot = spots.find(s => s.id === id);
       if (!spot) return;
       currentSpotId = id;
+
       const nameKey = currentLang === "en" ? spot.nameEn : currentLang === "ja" ? spot.nameJa : spot.nameZh;
       const descKey = currentLang === "en" ? spot.descEn : currentLang === "ja" ? spot.descJa : spot.descZh;
       const accessKey = currentLang === "en" ? spot.accessEn : currentLang === "ja" ? spot.accessJa : spot.accessZh;
+
+      const sponsorHtml = `
+        <div class="sponsor">
+          🔹 スポンサー Sponsor 🔹<br>
+          <a href="#">広告スペース | Ad Space</a>
+        </div>
+      `;
+
       appDiv.innerHTML = `
         <button class="back-btn" id="backButton">← Back</button>
-        ${renderSponsorBlock()}
-        <img class="detail-img" src="${spot.img}" alt="${escapeHtml(nameKey)}">
-        <h2>${escapeHtml(nameKey)}</h2>
-        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${escapeHtml(descKey)}</p>
-        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${escapeHtml(accessKey)}</p>
-        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}</a>
-        ${renderSponsorBlock()}
+        ${sponsorHtml}
+        <img class="detail-img" src="${spot.img}" alt="${nameKey}">
+        <h2>${nameKey}</h2>
+        <p><strong>📝 ${currentLang === "en" ? "Description" : currentLang === "ja" ? "説明" : "介绍"}</strong><br>${descKey}</p>
+        <p><strong>🚆 ${currentLang === "en" ? "Access" : currentLang === "ja" ? "アクセス" : "交通"}</strong><br>${accessKey}</p>
+        <a class="official-link" href="${spot.official}" target="_blank" rel="noopener">
+          🔗 ${currentLang === "en" ? "Official Website" : currentLang === "ja" ? "公式サイト" : "官方网站"}
+        </a>
+        ${sponsorHtml}
       `;
-      const backBtn = document.getElementById("backButton");
-      if (backBtn) backBtn.addEventListener("click", () => renderMainPage());
+
+      document.getElementById("backButton").addEventListener("click", () => {
+        renderMainPage();
+        updateLanguageOnPage();
+      });
     }
 
     function updateLanguageOnPage() {
+      // テキストの切り替え
       document.querySelectorAll(".lang-text").forEach(el => {
         const langAttr = el.getAttribute("data-lang");
-        if (langAttr === currentLang) el.classList.add("active-lang");
-        else el.classList.remove("active-lang");
+        if (langAttr === currentLang) {
+          el.classList.add("active-lang");
+        } else {
+          el.classList.remove("active-lang");
+        }
       });
-      if (currentSpotId !== null) showDetail(currentSpotId);
-      else renderMainPage();
+
+      // 詳細ページで表示中の場合、再描画
+      if (currentSpotId) {
+        showDetail(currentSpotId);
+      } else {
+        renderMainPage(); // 再描画で言語反映
+      }
     }
 
     function setLang(lang) {
       currentLang = lang;
       updateLanguageOnPage();
-      // オーバーレイが表示中なら言語に合わせて再描画
-      const overlay = document.getElementById("paymentGateOverlay");
-      if (overlay) {
-        hidePaymentOverlay();
-        showPaymentOverlay();
-      }
     }
 
-    // PayPal ボタンの初期化（オーバーレイ内で呼び出す）
-    function initPayPalButton() {
-      if (!window.paypal || paypalInitialized) return;
-      paypalInitialized = true;
-      const container = document.getElementById("paypal-button-container");
-      if (!container) return;
-      window.paypal.Buttons({
-        createOrder: function(data, actions) {
-          // 単発決済の場合
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: PAYMENT_AMOUNT,
-                currency_code: PAYMENT_CURRENCY
-              },
-              description: "Hiroshima Travel Guide Premium Access"
-            }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            console.log("Transaction completed", details);
-            onPaymentSuccess();
-          });
-        },
-        onError: function(err) {
-          console.error("PayPal error", err);
-          alert("決済処理中にエラーが発生しました。しばらく経ってから再度お試しください。");
-        }
-      }).render("#paypal-button-container");
-    }
-
-    // オーバーレイ表示
-    function showPaymentOverlay() {
-      const existing = document.getElementById("paymentGateOverlay");
-      if (existing) existing.remove();
-      paypalInitialized = false; // 再初期化できるようにリセット
-
-      let titleText = "", subText = "", btnNote = "";
-      if (currentLang === "en") {
-        titleText = "🔒 Premium Access";
-        subText = "Pay with PayPal to unlock the full travel guide";
-        btnNote = "After payment, the guide will be automatically unlocked.";
-      } else if (currentLang === "ja") {
-        titleText = "🔒 プレミアムアクセス";
-        subText = "PayPalでお支払いいただくと、すべてのコンテンツをご覧いただけます";
-        btnNote = "お支払い完了後、自動的にコンテンツが表示されます。";
-      } else {
-        titleText = "🔒 高级访问";
-        subText = "使用PayPal支付，解锁完整旅行指南";
-        btnNote = "支付完成后，内容将自动解锁。";
-      }
-
-      const overlayDiv = document.createElement("div");
-      overlayDiv.id = "paymentGateOverlay";
-      overlayDiv.className = "payment-overlay";
-      overlayDiv.innerHTML = `
-        <div class="payment-card">
-          <div class="qr-title">${titleText}</div>
-          <div class="qr-sub">${subText}</div>
-          <div id="paypal-button-container" class="paypal-button-container"></div>
-          <div class="note-text">💡 ${btnNote}</div>
-        </div>
-      `;
-      document.body.appendChild(overlayDiv);
-      document.body.classList.add("overlay-active");
-
-      // PayPal SDK がまだロードされていなければロードする
-      if (!document.querySelector('script[src*="paypal.com/sdk/js"]')) {
-        const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=${PAYMENT_CURRENCY}`;
-        script.onload = () => {
-          initPayPalButton();
-        };
-        document.head.appendChild(script);
-      } else {
-        initPayPalButton();
-      }
-    }
-
-    function hidePaymentOverlay() {
-      const overlay = document.getElementById("paymentGateOverlay");
-      if (overlay) overlay.remove();
-      document.body.classList.remove("overlay-active");
-    }
-
-    function checkPaymentStatus() {
-      const isUnlocked = localStorage.getItem("hiroshima_premium_unlocked") === "true";
-      if (!isUnlocked) {
-        showPaymentOverlay();
-      } else {
-        hidePaymentOverlay();
-      }
-    }
-
-    // テーマと初期化
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      document.body.classList.remove("dark");
-      document.body.classList.add("light");
-    } else {
-      document.body.classList.add("dark");
-    }
+    // イベントリスナー
     document.getElementById("darkModeBtn").addEventListener("click", () => {
       document.body.classList.remove("light");
       document.body.classList.add("dark");
@@ -522,22 +358,21 @@
       document.body.classList.add("light");
       localStorage.setItem("theme", "light");
     });
-
-    // 言語ボタン再定義（オーバーレイ対応）
     document.getElementById("langEn").addEventListener("click", () => setLang("en"));
     document.getElementById("LangJa").addEventListener("click", () => setLang("ja"));
     document.getElementById("langZh").addEventListener("click", () => setLang("zh"));
 
-    renderMainPage();
-    setTimeout(() => {
-      checkPaymentStatus();
-    }, 100);
+    // 保存テーマ読み込み
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "light") {
+      document.body.classList.remove("dark");
+      document.body.classList.add("light");
+    } else {
+      document.body.classList.add("dark");
+    }
 
-    // デバッグ用リセット関数
-    window.__resetPaymentLock = () => {
-      localStorage.removeItem("hiroshima_premium_unlocked");
-      location.reload();
-    };
+    // 初期表示
+    renderMainPage();
   </script>
 </body>
 </html>
